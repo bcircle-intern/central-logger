@@ -43,7 +43,7 @@ export class LogList extends React.Component<Props, State> {
         this.limit = 0;
     }
     public fetchMoreData = () => {
-        if (this.props.logLenght <= this.state.items.length) {
+        if (this.props.logLenght === this.state.items.length) {
             this.setState({ hasMore: false });
             return;
         }
@@ -147,13 +147,13 @@ export class LogList extends React.Component<Props, State> {
                                     </p>
                                 }
                             >
-                                    <Table compact >
-                                        <Table.Body>
-                                            {
-                                                this.state.items.map((x, key) => <Logs logsNow={x} key={key} />)
-                                            }
-                                        </Table.Body>
-                                    </Table>
+                                <Table compact >
+                                    <Table.Body>
+                                        {
+                                            this.state.items.map((x, key) => <Logs logsNow={x} key={key} />)
+                                        }
+                                    </Table.Body>
+                                </Table>
 
                             </InfiniteScroll>
                         }
