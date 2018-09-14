@@ -13,17 +13,21 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Cryptography.KeyDerivation;
 using CentralLogger.Services;
 
-namespace CentralLogger.Controllers {
+namespace CentralLogger.Controllers
+{
     [Route("api/[controller]/[action]")]
     [ApiController]
-    public class SummaryController : ControllerBase {
+    public class SummaryController : ControllerBase
+    {
         private readonly CentralLoggerContext db;
-        public SummaryController(CentralLoggerContext db) {
+        public SummaryController(CentralLoggerContext db)
+        {
             this.db = db;
         }
 
         [HttpPost]
-        public async Task<IActionResult> GetDataChart([FromBody]DateTime date) {
+        public async Task<IActionResult> GetDataChart([FromBody]DateTime date)
+        {
             List<int> countInfo = new List<int>();
             List<int> countError = new List<int>();
             List<int> countDebug = new List<int>();
@@ -31,16 +35,18 @@ namespace CentralLogger.Controllers {
             List<int> countWarning = new List<int>();
             List<int> countCritical = new List<int>();
 
-            date = date.ToLocalTime();
-            var startDate = new DateTime(date.Year, date.Month, date.Day, 0, 0, 0);
-            var endDate = new DateTime(date.Year, date.Month, date.Day, 23, 59, 59);
+            var year = date.Year;
+            var month = date.Month;
+            var day = date.Day;
+            var startDate = new DateTime(year, month, day, 0, 0, 0);
+            var endDate = new DateTime(year, month, day, 23, 59, 59);
 
             var data = await db.LogInfos.Where(x => x.DateTime >= startDate && x.DateTime <= endDate)
                         .Select(x => new { x.DateTime, x.LogLevel }).ToListAsync();
 
-            for (int i = 0; i <= 23; i++) {
-
-                startDate = new DateTime(date.Year, date.Month, date.Day, i, 0, 0);
+            for (int i = 0; i <= 23; i++)
+            {
+                startDate = new DateTime(year, month, day, i, 0, 0);
                 endDate = new DateTime(date.Year, date.Month, date.Day, i, 59, 0);
                 var amountInfo = data.Where(x => (x.DateTime >= startDate && x.DateTime <= endDate) && x.LogLevel == LogLevel.Information).Count();
                 var amountError = data.Where(x => (x.DateTime >= startDate && x.DateTime <= endDate) && x.LogLevel == LogLevel.Error).Count();
@@ -57,7 +63,8 @@ namespace CentralLogger.Controllers {
                 countCritical.Add(amountCritical);
 
             }
-            return Ok(new CountLogs {
+            return Ok(new CountLogs
+            {
                 dataInfos = countInfo,
                 dataErrors = countError,
                 dataDebugs = countDebug,

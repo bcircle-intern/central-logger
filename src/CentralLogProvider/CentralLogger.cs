@@ -85,7 +85,7 @@ namespace CentralLogProvider
             Console.WriteLine(log);
             queue.Enqueue(new LogMessage
             {
-                DateTime = DateTime.Now.ToLocalTime(),
+                DateTime = DateTime.Now,
                 Application = AppContext,
                 LogLevel = logLevel.ToString(),
                 Message = state.ToString(),

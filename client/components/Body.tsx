@@ -502,18 +502,16 @@ export class Body extends React.Component<any, State> {
                                         </List>
                                     </Link>
                                 </Menu>
-                                <main id="page-wrap">
-
                                 <BodyDiv>
                                     <Loader content="Loading" active={this.state.loading} />
+                                    <main id="page-wrap">
 
                                         <LogList startDay={startDay} endDay={endDay} logNow={this.LogNow} loading={loading} all={allday}
                                             onStartChange={this.handleStartDateChange} onEndChange={this.handleEndDateChange} allApp={allApp}
                                             allIp={allIp} selectApp={selectApp} selectIp={selectIp} onIpChange={this.setIP} onAppChange={this.setApp}
                                             allData={this.state.logDate} onMore={this.OnMore} logLenght={logLenght} new={newSearch} />
+                                    </main>
                                 </BodyDiv >
-                                </main>
-
                             </div>
                         )
                     }} />

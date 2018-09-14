@@ -1,6 +1,5 @@
 import React, { CSSProperties } from "react"
 import styled from "styled-components"
-import { scaleDown as Menu } from "react-burger-menu"
 
 const FooterDiv = styled.div`
     padding: 0px;
@@ -16,13 +15,9 @@ const FooterDiv = styled.div`
 export class Footer extends React.Component<{ style?: CSSProperties }> {
     public render() {
         return (
-            <div id="outer-container">
-                <main id="page-wrap">
-                    <FooterDiv>
-                        Central Logger 0.1.0
-                    </FooterDiv>
-                </main>
-            </div>
+            <FooterDiv>
+                Central Logger 0.1.0
+            </FooterDiv>
         )
     }
 }
