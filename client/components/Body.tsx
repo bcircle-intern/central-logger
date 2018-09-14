@@ -1,5 +1,5 @@
 import React from "react"
-import { Loader, Header, Button, Icon, List } from "semantic-ui-react"
+import { Loader, Header, Icon, List } from "semantic-ui-react"
 import styled from "styled-components"
 import moment, { Moment } from "moment"
 import "react-datepicker/dist/react-datepicker.css"
@@ -7,11 +7,11 @@ import "semantic-ui-css/semantic.min.css";
 import "/css/Body.css"
 import "../css/Animation.css"
 import { getApiUrl } from "../share/Configuration"
-import { LoggerApi, Log, GetEmail, EmailList, GetUsers } from "../share/LoggerApi"
+import { LoggerApi, Log, GetEmail, GetUsers } from "../share/LoggerApi"
 import { LogList } from "./LogList"
-import signalR, { HubConnectionBuilder } from "@aspnet/signalr";
+import { HubConnectionBuilder } from "@aspnet/signalr";
 import { debounce } from "throttle-debounce";
-import { Route, Switch, Link, HashRouter, BrowserHistory } from "react-router-dom";
+import { Route, Switch, Link } from "react-router-dom";
 import { Chart } from "./Chart";
 import { Manage } from "./Manage";
 import { UserList } from "./UserList"
@@ -115,7 +115,7 @@ export class Body extends React.Component<any, State> {
             countTrace: null,
             countWarning: null,
             countCritical: null,
-            emailList: null,
+            emailList: [],
             newApp: null,
             newEmail1: null,
             newEmail2: null,
@@ -458,230 +458,228 @@ export class Body extends React.Component<any, State> {
             , newApp, newEmail1, newEmail2, newEmail3, newEnable, editApp, editEmail1, editEmail2, editEmail3, editEnable
             , userList, newUser, newPassword1, newPassword2 } = this.state
         return (
-            <HashRouter history={BrowserHistory}>
-                <Switch>
-                    <Route exact path="/" render={() => {
-                        return (
-                            <div id="outer-container">
-                                <Menu isOpen={this.state.openMenu} width={280} pageWrapId={"page-wrap"} outerContainerId={"outer-container"} >
-                                    <Header as="h2" icon inverted>
-                                        <Icon name="eye" />
-                                        Central Logger™
+            <Switch>
+                <Route exact path="/" render={() => {
+                    return (
+                        <div id="outer-container">
+                            <Menu isOpen={this.state.openMenu} width={280} pageWrapId={"page-wrap"} outerContainerId={"outer-container"} >
+                                <Header as="h2" icon inverted>
+                                    <Icon name="eye" />
+                                    Central Logger™
                                     <Header.Subheader>Menu</Header.Subheader>
-                                    </Header>
-                                    <Link to="/summary" className="navbar-item">
-                                        <List divided relaxed selection>
-                                            <List.Item>
-                                                <List.Icon name="area graph" size="small" verticalAlign="middle" />
-                                                <List.Content>
-                                                    <List.Header as="a">Log Chart</List.Header>
-                                                </List.Content>
-                                            </List.Item>
-                                        </List>
-                                    </Link>
-                                    <br />
-                                    <Link to="/manage" className="navbar-item">
-                                        <List divided relaxed selection>
-                                            <List.Item>
-                                                <List.Icon name="cogs" size="small" verticalAlign="middle" />
-                                                <List.Content>
-                                                    <List.Header as="a" onClick={this.onOpenMunu}>Manage</List.Header>
-                                                </List.Content>
-                                            </List.Item>
-                                        </List>
-                                    </Link>
-                                    <br />
-                                    <Link to="/user" className="navbar-item">
-                                        <List divided relaxed selection>
-                                            <List.Item onClick={this.onOpenMunu}>
-                                                <List.Icon name="users" size="small" verticalAlign="middle" />
-                                                <List.Content>
-                                                    <List.Header as="a">User Setting</List.Header>
-                                                </List.Content>
-                                            </List.Item>
-                                        </List>
-                                    </Link>
-                                </Menu>
-                                <main id="page-wrap">
+                                </Header>
+                                <Link to="/summary" className="navbar-item">
+                                    <List divided relaxed selection>
+                                        <List.Item>
+                                            <List.Icon name="area graph" size="small" verticalAlign="middle" />
+                                            <List.Content>
+                                                <List.Header as="a">Log Chart</List.Header>
+                                            </List.Content>
+                                        </List.Item>
+                                    </List>
+                                </Link>
+                                <br />
+                                <Link to="/manage" className="navbar-item">
+                                    <List divided relaxed selection>
+                                        <List.Item>
+                                            <List.Icon name="cogs" size="small" verticalAlign="middle" />
+                                            <List.Content>
+                                                <List.Header as="a" onClick={this.onOpenMunu}>Manage</List.Header>
+                                            </List.Content>
+                                        </List.Item>
+                                    </List>
+                                </Link>
+                                <br />
+                                <Link to="/user" className="navbar-item">
+                                    <List divided relaxed selection>
+                                        <List.Item onClick={this.onOpenMunu}>
+                                            <List.Icon name="users" size="small" verticalAlign="middle" />
+                                            <List.Content>
+                                                <List.Header as="a">User Setting</List.Header>
+                                            </List.Content>
+                                        </List.Item>
+                                    </List>
+                                </Link>
+                            </Menu>
+                            <main id="page-wrap">
 
                                 <BodyDiv>
                                     <Loader content="Loading" active={this.state.loading} />
 
-                                        <LogList startDay={startDay} endDay={endDay} logNow={this.LogNow} loading={loading} all={allday}
-                                            onStartChange={this.handleStartDateChange} onEndChange={this.handleEndDateChange} allApp={allApp}
-                                            allIp={allIp} selectApp={selectApp} selectIp={selectIp} onIpChange={this.setIP} onAppChange={this.setApp}
-                                            allData={this.state.logDate} onMore={this.OnMore} logLenght={logLenght} new={newSearch} />
+                                    <LogList startDay={startDay} endDay={endDay} logNow={this.LogNow} loading={loading} all={allday}
+                                        onStartChange={this.handleStartDateChange} onEndChange={this.handleEndDateChange} allApp={allApp}
+                                        allIp={allIp} selectApp={selectApp} selectIp={selectIp} onIpChange={this.setIP} onAppChange={this.setApp}
+                                        allData={this.state.logDate} onMore={this.OnMore} logLenght={logLenght} new={newSearch} />
                                 </BodyDiv >
-                                </main>
+                            </main>
 
-                            </div>
-                        )
-                    }} />
-                    <Route exact path="/summary" render={() => {
-                        return (
-                            <div id="outer-container">
-                                <Menu isOpen={this.state.openMenu} width={280} pageWrapId={"page-wrap"} outerContainerId={"outer-container"} >
-                                    <Header as="h2" icon inverted>
-                                        <Icon name="eye" />
-                                        Central Logger™
+                        </div>
+                    )
+                }} />
+                <Route exact path="/summary" render={() => {
+                    return (
+                        <div id="outer-container">
+                            <Menu isOpen={this.state.openMenu} width={280} pageWrapId={"page-wrap"} outerContainerId={"outer-container"} >
+                                <Header as="h2" icon inverted>
+                                    <Icon name="eye" />
+                                    Central Logger™
                                     <Header.Subheader>Menu</Header.Subheader>
-                                    </Header>
-                                    <Link to="/" className="navbar-item">
-                                        <List divided relaxed selection>
-                                            <List.Item onClick={this.onOpenMunu}>
-                                                <List.Icon name="eye" size="small" verticalAlign="middle" />
-                                                <List.Content>
-                                                    <List.Header as="a">Log List</List.Header>
-                                                </List.Content>
-                                            </List.Item>
-                                        </List>
-                                    </Link>
-                                    <br />
-                                    <Link to="/manage" className="navbar-item">
-                                        <List divided relaxed selection>
-                                            <List.Item onClick={this.onOpenMunu}>
-                                                <List.Icon name="cogs" size="small" verticalAlign="middle" />
-                                                <List.Content>
-                                                    <List.Header as="a">Manage</List.Header>
-                                                </List.Content>
-                                            </List.Item>
-                                        </List>
-                                    </Link>
-                                    <br />
-                                    <Link to="/user" className="navbar-item">
-                                        <List divided relaxed selection>
-                                            <List.Item onClick={this.onOpenMunu}>
-                                                <List.Icon name="users" size="small" verticalAlign="middle" />
-                                                <List.Content>
-                                                    <List.Header as="a">User Setting</List.Header>
-                                                </List.Content>
-                                            </List.Item>
-                                        </List>
-                                    </Link>
-                                </Menu>
-                                <main id="page-wrap">
-                                    <BodyDiv>
-                                        <Chart Day={selectDay} onDayChange={this.setDay} info={countInfo} debug={countDebug} error={countError}
-                                            trace={countTrace} warning={countWarning} critical={countCritical} />
-                                    </BodyDiv>
-                                </main>
-                            </div>
-                        )
+                                </Header>
+                                <Link to="/" className="navbar-item">
+                                    <List divided relaxed selection>
+                                        <List.Item onClick={this.onOpenMunu}>
+                                            <List.Icon name="eye" size="small" verticalAlign="middle" />
+                                            <List.Content>
+                                                <List.Header as="a">Log List</List.Header>
+                                            </List.Content>
+                                        </List.Item>
+                                    </List>
+                                </Link>
+                                <br />
+                                <Link to="/manage" className="navbar-item">
+                                    <List divided relaxed selection>
+                                        <List.Item onClick={this.onOpenMunu}>
+                                            <List.Icon name="cogs" size="small" verticalAlign="middle" />
+                                            <List.Content>
+                                                <List.Header as="a">Manage</List.Header>
+                                            </List.Content>
+                                        </List.Item>
+                                    </List>
+                                </Link>
+                                <br />
+                                <Link to="/user" className="navbar-item">
+                                    <List divided relaxed selection>
+                                        <List.Item onClick={this.onOpenMunu}>
+                                            <List.Icon name="users" size="small" verticalAlign="middle" />
+                                            <List.Content>
+                                                <List.Header as="a">User Setting</List.Header>
+                                            </List.Content>
+                                        </List.Item>
+                                    </List>
+                                </Link>
+                            </Menu>
+                            <main id="page-wrap">
+                                <BodyDiv>
+                                    <Chart Day={selectDay} onDayChange={this.setDay} info={countInfo} debug={countDebug} error={countError}
+                                        trace={countTrace} warning={countWarning} critical={countCritical} />
+                                </BodyDiv>
+                            </main>
+                        </div>
+                    )
 
-                    }} />
-                    <Route exact path="/manage" render={() => {
-                        return (
-                            <div id="outer-container">
-                                <Menu isOpen={this.state.openMenu} width={280} pageWrapId={"page-wrap"} outerContainerId={"outer-container"} >
-                                    <Header as="h2" icon inverted>
-                                        <Icon name="eye" />
-                                        Central Logger™
+                }} />
+                <Route exact path="/manage" render={() => {
+                    return (
+                        <div id="outer-container">
+                            <Menu isOpen={this.state.openMenu} width={280} pageWrapId={"page-wrap"} outerContainerId={"outer-container"} >
+                                <Header as="h2" icon inverted>
+                                    <Icon name="eye" />
+                                    Central Logger™
                                     <Header.Subheader>Menu</Header.Subheader>
-                                    </Header>
-                                    <Link to="/" className="navbar-item">
-                                        <List divided relaxed selection>
-                                            <List.Item onClick={this.onOpenMunu}>
-                                                <List.Icon name="eye" size="small" verticalAlign="middle" />
-                                                <List.Content>
-                                                    <List.Header as="a">Log List</List.Header>
-                                                </List.Content>
-                                            </List.Item>
-                                        </List>
-                                    </Link>
-                                    <br />
-                                    <Link to="/summary" className="navbar-item">
-                                        <List divided relaxed selection>
-                                            <List.Item onClick={this.onOpenMunu}>
-                                                <List.Icon name="area graph" size="small" verticalAlign="middle" />
-                                                <List.Content>
-                                                    <List.Header as="a">Log Chart</List.Header>
-                                                </List.Content>
-                                            </List.Item>
-                                        </List>
-                                    </Link>
-                                    <br />
-                                    <Link to="/user" className="navbar-item">
-                                        <List divided relaxed selection>
-                                            <List.Item onClick={this.onOpenMunu}>
-                                                <List.Icon name="users" size="small" verticalAlign="middle" />
-                                                <List.Content>
-                                                    <List.Header as="a">User Setting</List.Header>
-                                                </List.Content>
-                                            </List.Item>
-                                        </List>
-                                    </Link>
-                                </Menu>
-                                <main id="page-wrap">
-                                    <BodyDiv>
-                                        <Manage allApp={allMailApp} list={emailList} loading={loading}
-                                            onAppChange={this.onNewApp} onEmail1Change={this.onNewEmail1} onEmail2Change={this.onNewEmail2}
-                                            onEmail3Change={this.onNewEmail3} onEnableChange={this.onNewEnable} onNewSave={this.onNewSave}
-                                            newApp={newApp} newEmail1={newEmail1} newEmail2={newEmail2} newEmail3={newEmail3} newEnable={newEnable}
-                                            onDelete={this.OnDelete} onAppEdit={this.onEditApp} onEmail1Edit={this.onEditEmail1} onEmail2Edit={this.onEditEmail2}
-                                            onEmail3Edit={this.onEditEmail3} onEnableEdit={this.onEditEnable} onEditSave={this.onEditSave}
-                                            editEmail1={editEmail1} editEmail2={editEmail2} editEmail3={editEmail3} editEnable={editEnable}
-                                            editApp={editApp}
-                                        />
-                                    </BodyDiv>
-                                </main>
-                            </div>
-                        )
-                    }} />
-                    <Route exact path="/user" render={() => {
-                        return (
-                            <div id="outer-container">
-                                <Menu isOpen={this.state.openMenu} width={280} pageWrapId={"page-wrap"} outerContainerId={"outer-container"} >
-                                    <Header as="h2" icon inverted>
-                                        <Icon name="eye" />
-                                        Central Logger™
+                                </Header>
+                                <Link to="/" className="navbar-item">
+                                    <List divided relaxed selection>
+                                        <List.Item onClick={this.onOpenMunu}>
+                                            <List.Icon name="eye" size="small" verticalAlign="middle" />
+                                            <List.Content>
+                                                <List.Header as="a">Log List</List.Header>
+                                            </List.Content>
+                                        </List.Item>
+                                    </List>
+                                </Link>
+                                <br />
+                                <Link to="/summary" className="navbar-item">
+                                    <List divided relaxed selection>
+                                        <List.Item onClick={this.onOpenMunu}>
+                                            <List.Icon name="area graph" size="small" verticalAlign="middle" />
+                                            <List.Content>
+                                                <List.Header as="a">Log Chart</List.Header>
+                                            </List.Content>
+                                        </List.Item>
+                                    </List>
+                                </Link>
+                                <br />
+                                <Link to="/user" className="navbar-item">
+                                    <List divided relaxed selection>
+                                        <List.Item onClick={this.onOpenMunu}>
+                                            <List.Icon name="users" size="small" verticalAlign="middle" />
+                                            <List.Content>
+                                                <List.Header as="a">User Setting</List.Header>
+                                            </List.Content>
+                                        </List.Item>
+                                    </List>
+                                </Link>
+                            </Menu>
+                            <main id="page-wrap">
+                                <BodyDiv>
+                                    <Manage allApp={allMailApp} list={emailList} loading={loading}
+                                        onAppChange={this.onNewApp} onEmail1Change={this.onNewEmail1} onEmail2Change={this.onNewEmail2}
+                                        onEmail3Change={this.onNewEmail3} onEnableChange={this.onNewEnable} onNewSave={this.onNewSave}
+                                        newApp={newApp} newEmail1={newEmail1} newEmail2={newEmail2} newEmail3={newEmail3} newEnable={newEnable}
+                                        onDelete={this.OnDelete} onAppEdit={this.onEditApp} onEmail1Edit={this.onEditEmail1} onEmail2Edit={this.onEditEmail2}
+                                        onEmail3Edit={this.onEditEmail3} onEnableEdit={this.onEditEnable} onEditSave={this.onEditSave}
+                                        editEmail1={editEmail1} editEmail2={editEmail2} editEmail3={editEmail3} editEnable={editEnable}
+                                        editApp={editApp}
+                                    />
+                                </BodyDiv>
+                            </main>
+                        </div>
+                    )
+                }} />
+                <Route exact path="/user" render={() => {
+                    return (
+                        <div id="outer-container">
+                            <Menu isOpen={this.state.openMenu} width={280} pageWrapId={"page-wrap"} outerContainerId={"outer-container"} >
+                                <Header as="h2" icon inverted>
+                                    <Icon name="eye" />
+                                    Central Logger™
                                     <Header.Subheader>Menu</Header.Subheader>
-                                    </Header>
-                                    <Link to="/" className="navbar-item">
-                                        <List divided relaxed selection>
-                                            <List.Item onClick={this.onOpenMunu}>
-                                                <List.Icon name="eye" size="small" verticalAlign="middle" />
-                                                <List.Content>
-                                                    <List.Header as="a">Log List</List.Header>
-                                                </List.Content>
-                                            </List.Item>
-                                        </List>
-                                    </Link>
-                                    <br />
-                                    <Link to="/manage" className="navbar-item">
-                                        <List divided relaxed selection>
-                                            <List.Item onClick={this.onOpenMunu}>
-                                                <List.Icon name="cogs" size="small" verticalAlign="middle" />
-                                                <List.Content>
-                                                    <List.Header as="a">Manage</List.Header>
-                                                </List.Content>
-                                            </List.Item>
-                                        </List>
-                                    </Link>
-                                    <br />
-                                    <Link to="/summary" className="navbar-item">
-                                        <List divided relaxed selection>
-                                            <List.Item onClick={this.onOpenMunu}>
-                                                <List.Icon name="area graph" size="small" verticalAlign="middle" />
-                                                <List.Content>
-                                                    <List.Header as="a">Log Chart</List.Header>
-                                                </List.Content>
-                                            </List.Item>
-                                        </List>
-                                    </Link>
-                                </Menu>
-                                <main id="page-wrap">
-                                    <BodyDiv>
-                                        <UserList loading={loading} list={userList} onUserChange={this.onNewUser} onPassword1Change={this.onNewPassword1}
-                                            onPassword2Change={this.onNewPassword2} pass1={newPassword1} pass2={newPassword2} onSave={this.onSaveUser}
-                                            onDelete={this.OnDeleteUser} user={newUser} />
-                                    </BodyDiv>
-                                </main>
-                            </div>
-                        )
+                                </Header>
+                                <Link to="/" className="navbar-item">
+                                    <List divided relaxed selection>
+                                        <List.Item onClick={this.onOpenMunu}>
+                                            <List.Icon name="eye" size="small" verticalAlign="middle" />
+                                            <List.Content>
+                                                <List.Header as="a">Log List</List.Header>
+                                            </List.Content>
+                                        </List.Item>
+                                    </List>
+                                </Link>
+                                <br />
+                                <Link to="/manage" className="navbar-item">
+                                    <List divided relaxed selection>
+                                        <List.Item onClick={this.onOpenMunu}>
+                                            <List.Icon name="cogs" size="small" verticalAlign="middle" />
+                                            <List.Content>
+                                                <List.Header as="a">Manage</List.Header>
+                                            </List.Content>
+                                        </List.Item>
+                                    </List>
+                                </Link>
+                                <br />
+                                <Link to="/summary" className="navbar-item">
+                                    <List divided relaxed selection>
+                                        <List.Item onClick={this.onOpenMunu}>
+                                            <List.Icon name="area graph" size="small" verticalAlign="middle" />
+                                            <List.Content>
+                                                <List.Header as="a">Log Chart</List.Header>
+                                            </List.Content>
+                                        </List.Item>
+                                    </List>
+                                </Link>
+                            </Menu>
+                            <main id="page-wrap">
+                                <BodyDiv>
+                                    <UserList loading={loading} list={userList} onUserChange={this.onNewUser} onPassword1Change={this.onNewPassword1}
+                                        onPassword2Change={this.onNewPassword2} pass1={newPassword1} pass2={newPassword2} onSave={this.onSaveUser}
+                                        onDelete={this.OnDeleteUser} user={newUser} />
+                                </BodyDiv>
+                            </main>
+                        </div>
+                    )
 
-                    }} />
-                </Switch>
-            </HashRouter>
+                }} />
+            </Switch>
         )
     }
 }

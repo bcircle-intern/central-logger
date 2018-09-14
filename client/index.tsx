@@ -7,7 +7,7 @@ import { Header } from "./components/Header"
 import { Body } from "./components/Body"
 import { Login } from "./components/Login"
 import AppStorage from "./share/AppStorage"
-import { HashRouter } from "react-router-dom"
+import { HashRouter, BrowserHistory } from "react-router-dom"
 
 type State = {
     loggedIn: boolean
@@ -37,10 +37,10 @@ export class App extends React.Component<{}, State> {
     }
     public onLogoutPlease = () => {
         this.setState({ loggedIn: false })
-        }
+    }
 
     public componentDidMount() {
-        this.setState({ loggedIn: AppStorage.getAccessToken() !== null }, () => console.log(this.state.loggedIn))
+        this.setState({ loggedIn: AppStorage.getAccessToken() !== null })
     }
 
     public render() {
@@ -63,4 +63,10 @@ export class App extends React.Component<{}, State> {
 }
 
 let root = document.getElementById("root")
-ReactDOM.render(<App />, root)
+
+const app = (
+    <HashRouter history={BrowserHistory}>
+        <App />
+    </HashRouter>
+)
+ReactDOM.render(app, root)
