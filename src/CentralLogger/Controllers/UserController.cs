@@ -55,7 +55,7 @@ namespace CentralLogger.Controllers {
 
         [HttpGet]
         public ActionResult DeleteUser(string User) {
-            var del = db.Users.Where(data => data.User == User).FirstOrDefault();
+            var del = db.Users.FirstOrDefault(data => data.User == User);
             if (del != null && User != "admin") {
                 db.Users.Remove(del);
                 db.SaveChanges();
@@ -67,7 +67,7 @@ namespace CentralLogger.Controllers {
         [HttpGet]
         public ActionResult<IEnumerable<string>> ShowAllUser() {
             try {
-                var showUsers = db.Users.Select(data => data.User).ToArray();
+                var showUsers = db.Users.Where(x => x.Id > 1).Select(data => data.User).ToArray();
                 return Ok(showUsers);
             } catch (Exception ex) {
                 return StatusCode(500, ex);

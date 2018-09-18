@@ -22,7 +22,7 @@ using System.Threading;
 
 namespace CentralLogger {
     public class Startup {
-        public Startup(IConfiguration configuration, IHostingEnvironment env) {
+        public Startup(IHostingEnvironment env) {
             var builder = new ConfigurationBuilder()
               .SetBasePath(env.ContentRootPath)
               .AddJsonFile($"appsettings.{env.EnvironmentName}.json", optional: true)
@@ -85,7 +85,7 @@ namespace CentralLogger {
             GenrateDatabase(db, userService);
         }
 
-        private void GenrateDatabase(CentralLoggerContext db, UserService userService) {
+        private static void GenrateDatabase(CentralLoggerContext db, UserService userService) {
             Console.WriteLine("Create DB");
             var createData = db.Database.EnsureCreated();
             if (createData) {

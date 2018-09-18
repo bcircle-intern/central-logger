@@ -18,9 +18,9 @@ namespace CentralLogger.Services {
         }
 
         public void AddEmail(string app) {
-            var exist = db.Emails.Where(x => x.Application == app).FirstOrDefault();
+            var exist = db.Emails.FirstOrDefault(x => x.Application == app);
+            var email = new Emails();
             if (exist == null) {
-                var email = new Emails();
                 email.Email_1 = "somnuk.wk@bcircle.co.th";
                 email.Email_2 = "somnuk.wk@outlook.com";
                 email.Enable = true;
@@ -31,17 +31,17 @@ namespace CentralLogger.Services {
         }
 
         public bool AddUser(string username, string password) {
-            string hashedKey = Convert.ToBase64String(KeyDerivation.Pbkdf2(
+            var hashedKey = Convert.ToBase64String(KeyDerivation.Pbkdf2(
             password: password,
             salt: salt,
             prf: KeyDerivationPrf.HMACSHA1,
             iterationCount: 10000,
             numBytesRequested: 256 / 8));
 
-            var hasUser = db.Users.Where(x => x.User.Equals(username)).Any();
+            var hasUser = db.Users.Any(x => x.User.Equals(username));
 
             if (!hasUser) {
-                db.Users.Add(new Users() {
+                db.Users.Add(new Users {
                     User = username,
                     Password = hashedKey
                 });
@@ -54,7 +54,7 @@ namespace CentralLogger.Services {
             var user = await db.Users.Where(x => x.User.Equals(username)).FirstOrDefaultAsync();
 
             if (user != null) {
-                string hashedKey = Convert.ToBase64String(KeyDerivation.Pbkdf2(
+                var hashedKey = Convert.ToBase64String(KeyDerivation.Pbkdf2(
                     password: password,
                     salt: salt,
                     prf: KeyDerivationPrf.HMACSHA1,

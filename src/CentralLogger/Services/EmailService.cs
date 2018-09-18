@@ -12,6 +12,8 @@ namespace CentralLogger.Services {
         private readonly ConcurrentQueue<LogInfo> queue = new ConcurrentQueue<LogInfo>();
         private readonly ConcurrentQueue<string> queueMail = new ConcurrentQueue<string>();
 
+        private readonly SmtpClient SmtpServer = new SmtpClient("smtp.gmail.com");
+
         private readonly Timer timer;
         private readonly IConfiguration configuration;
         public EmailService(IConfiguration configuration) {
@@ -47,14 +49,13 @@ namespace CentralLogger.Services {
         }
 
         public async Task SendEmail(LogInfo data, string Email) {
-            string subject = $"Critical Alert {data.Application} [ {data.Ip} ]";
-            string body = $"Found Critical:@Application : {data.Application}@Datetime : {data.DateTime}@Category : {data.Category}@IP : {data.Ip}@Message : {data.Message}";
+            var subject = $"Critical Alert {data.Application} [ {data.Ip} ]";
+            var body = $"Found Critical:@Application : {data.Application}@Datetime : {data.DateTime}@Category : {data.Category}@IP : {data.Ip}@Message : {data.Message}";
             body = body.Replace("@", Environment.NewLine);
-            string FromMail = configuration["Email:Account"];
-            string Password = configuration["Email:Password"];
-            string emailTo = Email;
-            MailMessage mail = new MailMessage();
-            SmtpClient SmtpServer = new SmtpClient("smtp.gmail.com");
+            var FromMail = configuration["Email:Account"];
+            var Password = configuration["Email:Password"];
+            var emailTo = Email;
+            var mail = new MailMessage();
             SmtpServer.UseDefaultCredentials = false;
             SmtpServer.EnableSsl = true;
             SmtpServer.Port = 587;

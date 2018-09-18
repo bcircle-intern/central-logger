@@ -42,12 +42,12 @@ namespace CentralLogger.Controllers {
 
                 startDate = new DateTime(date.Year, date.Month, date.Day, i, 0, 0);
                 endDate = new DateTime(date.Year, date.Month, date.Day, i, 59, 0);
-                var amountInfo = data.Where(x => (x.DateTime >= startDate && x.DateTime <= endDate) && x.LogLevel == LogLevel.Information).Count();
-                var amountError = data.Where(x => (x.DateTime >= startDate && x.DateTime <= endDate) && x.LogLevel == LogLevel.Error).Count();
-                var amountDebug = data.Where(x => (x.DateTime >= startDate && x.DateTime <= endDate) && x.LogLevel == LogLevel.Debug).Count();
-                var amountTrace = data.Where(x => (x.DateTime >= startDate && x.DateTime <= endDate) && x.LogLevel == LogLevel.Trace).Count();
-                var amountWarning = data.Where(x => (x.DateTime >= startDate && x.DateTime <= endDate) && x.LogLevel == LogLevel.Warning).Count();
-                var amountCritical = data.Where(x => (x.DateTime >= startDate && x.DateTime <= endDate) && x.LogLevel == LogLevel.Critical).Count();
+                var amountInfo = data.Count(x => (x.DateTime >= startDate && x.DateTime <= endDate) && x.LogLevel == LogLevel.Information);
+                var amountError = data.Count(x => (x.DateTime >= startDate && x.DateTime <= endDate) && x.LogLevel == LogLevel.Error);
+                var amountDebug = data.Count(x => (x.DateTime >= startDate && x.DateTime <= endDate) && x.LogLevel == LogLevel.Debug);
+                var amountTrace = data.Count(x => (x.DateTime >= startDate && x.DateTime <= endDate) && x.LogLevel == LogLevel.Trace);
+                var amountWarning = data.Count(x => (x.DateTime >= startDate && x.DateTime <= endDate) && x.LogLevel == LogLevel.Warning);
+                var amountCritical = data.Count(x => (x.DateTime >= startDate && x.DateTime <= endDate) && x.LogLevel == LogLevel.Critical);
 
                 countInfo.Add(amountInfo);
                 countError.Add(amountError);
