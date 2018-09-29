@@ -10,13 +10,13 @@ using Microsoft.Extensions.Configuration;
 namespace CentralLogger.Services {
     public class EmailService {
 
-        private readonly ConcurrentQueue<LogInfo> queue = new ConcurrentQueue<LogInfo>();
-        private readonly ConcurrentQueue<string> queueMail = new ConcurrentQueue<string>();
-
-        private readonly Timer timer;
-        private readonly IConfiguration configuration;
+        readonly ConcurrentQueue<LogInfo> queue = new ConcurrentQueue<LogInfo>();
+        readonly ConcurrentQueue<string> queueMail = new ConcurrentQueue<string>();
+        readonly Timer timer;
+        readonly IConfiguration configuration;
         // private readonly HttpContext context;
-        private readonly string baseUrl;
+        readonly string baseUrl;
+        
         public EmailService(IConfiguration configuration, IHttpContextAccessor httpContextAccessor) {
 
             Console.WriteLine("Create MailService instance");

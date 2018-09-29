@@ -14,12 +14,10 @@ namespace CentralLogger.Controllers
     [ApiController]
     public class UserController : ControllerBase
     {
-        private readonly EmailService email;
-        private readonly CentralLoggerContext db;
-        private readonly IHubContext<LogHub> hubContext;
-        private readonly UserService userService;
-
-
+        readonly EmailService email;
+        readonly CentralLoggerContext db;
+        readonly IHubContext<LogHub> hubContext;
+        readonly UserService userService;
 
         public UserController(CentralLoggerContext db, IHubContext<LogHub> hubContext, EmailService email, UserService userService)
         {

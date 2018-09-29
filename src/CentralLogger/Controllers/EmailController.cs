@@ -13,11 +13,12 @@ namespace CentralLogger.Controllers {
     [Route("api/[controller]/[action]")]
     [ApiController]
     public class EmailController : ControllerBase {
-        private readonly CentralLoggerContext db;
+        readonly CentralLoggerContext db;
 
         public EmailController(CentralLoggerContext db) {
             this.db = db;
         }
+        
         [HttpPost]
         public async Task<ActionResult> AddEmailsAsyncAsync([FromBody] GetEmail x) {
             var applist = await db.Emails.Where(m => m.Application == x.Application).Select(m => m.Application).FirstOrDefaultAsync();

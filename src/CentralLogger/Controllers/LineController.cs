@@ -15,7 +15,7 @@ namespace CentralLogger.Controllers {
     [Route("api/[controller]/[action]")]
     [ApiController]
     public class LineController : ControllerBase {
-        private readonly CentralLoggerContext db;
+        readonly CentralLoggerContext db;
         public LineController(CentralLoggerContext db) {
             this.db = db;
         }
