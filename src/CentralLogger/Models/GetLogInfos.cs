@@ -1,6 +1,6 @@
 using System;
 
-namespace CentralLogger.Controllers {
+namespace CentralLogger.Models {
     public class GetLogInfos {
         public LogLevel LogLevel { set; get; }
         public string Message { set; get; }

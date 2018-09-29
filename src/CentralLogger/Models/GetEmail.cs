@@ -1,6 +1,6 @@
 using System;
 
-namespace CentralLogger.Controllers {
+namespace CentralLogger.Models {
     public class GetEmail {
         public string Application { get; set; }
         public string Email_1 { get; set; }

@@ -22,7 +22,7 @@ namespace CentralLogger.Controllers {
         }
 
         [HttpPost]
-        public async Task<IActionResult> GetDataChart([FromBody]DateTime date) {
+        public async Task<IActionResult> GetDataChart([FromBody] DateTime date) {
 
             var countInfo = new List<int>();
             var countError = new List<int>();

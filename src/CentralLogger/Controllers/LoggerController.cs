@@ -30,23 +30,18 @@ namespace CentralLogger.Controllers {
     [ApiController]
     public class LoggerController : ControllerBase {
 
-        private readonly EmailService email;
-        private readonly CentralLoggerContext db;
-        private readonly IHubContext<LogHub> hubContext;
-        private static JsonSerializerSettings jsonSettings = new JsonSerializerSettings { ContractResolver = new CamelCasePropertyNamesContractResolver() };
-        private readonly IConfiguration configuration;
-        private readonly UserService userService;
-        private IHttpClientFactory httpClientFactory;
-        private readonly LineContent lineContent = new LineContent();
+        readonly EmailService email;
+        readonly CentralLoggerContext db;
+        readonly IHubContext<LogHub> hubContext;
+        static JsonSerializerSettings jsonSettings = new JsonSerializerSettings { ContractResolver = new CamelCasePropertyNamesContractResolver() };
+        readonly IConfiguration configuration;
+        readonly IHttpClientFactory httpClientFactory;
 
-
-
-        public LoggerController(CentralLoggerContext db, IHubContext<LogHub> hubContext, EmailService email, UserService userService, IHttpClientFactory httpClientFactory, IConfiguration configuration) {
+        public LoggerController(CentralLoggerContext db, IHubContext<LogHub> hubContext, EmailService email, IHttpClientFactory httpClientFactory, IConfiguration configuration) {
             this.db = db;
             this.configuration = configuration;
             this.hubContext = hubContext;
             this.email = email;
-            this.userService = userService;
             this.httpClientFactory = httpClientFactory;
         }
 
@@ -102,7 +97,7 @@ namespace CentralLogger.Controllers {
             return Enumerable.Empty<string>();
         }
         [HttpPost]
-        public async Task<ActionResult> AddLog([FromBody]GetLogInfos x) {
+        public async Task<ActionResult> AddLog([FromBody] GetLogInfos x) {
 
             db.LogInfos.Add(new LogInfo {
                 LogLevel = x.LogLevel,
@@ -142,6 +137,7 @@ namespace CentralLogger.Controllers {
             var messages = $"CRITICAL ALERT {data.Application}  [ {data.Ip} ]\n► พบ Critical ที่:\n■ Application : {data.Application}\n■ Datetime : {data.DateTime}\n■ Category : {data.Category}\n■ IP : {data.Ip}\n■ Message : {data.Message}";
 
 
+            var lineContent = new LineContent();
             lineContent.To = await db.Line.Where(a => a.ApplicationName == data.Application).Select(m => m.LineId).Distinct().ToListAsync();
             lineContent.Messages.Add(new LineMessage {
                 Type = "text",
