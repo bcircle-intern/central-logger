@@ -88,7 +88,7 @@ namespace CentralLogger.Controllers {
             return Ip.ToList();
         }
 
-        [BasicAuthorize(typeof(BasicAuthorizeFilter))]
+
         [HttpGet]
         public IEnumerable<string> GetAllApp() {
             var App = db.LogInfos.Select(m => m.Application).Distinct();
