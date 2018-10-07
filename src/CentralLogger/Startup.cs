@@ -41,8 +41,6 @@ namespace CentralLogger {
                 connectionString = envConnectionString;
             }
 
-            Console.WriteLine($"ConnectionString = {connectionString}");
-
             services.AddCors();
             services.AddDbContext<CentralLoggerContext>(options => options.UseNpgsql(connectionString));
             services.AddSignalR();
@@ -89,13 +87,10 @@ namespace CentralLogger {
         }
 
         private void GenrateDatabase(CentralLoggerContext db, UserService userService) {
-            Console.WriteLine("Create DB");
             var createData = db.Database.EnsureCreated();
             if (createData) {
                 userService.AddUser("admin", "admin");
             }
-            userService.AddEmail("dotnet-script.dll");
-            Console.WriteLine("Create success");
         }
     }
 }

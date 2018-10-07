@@ -16,19 +16,6 @@ namespace CentralLogger.Services {
             this.salt = System.Text.Encoding.UTF8.GetBytes("4DI0P3K6");
         }
 
-        public void AddEmail(string app) {
-            var exist = db.Emails.FirstOrDefault(x => x.Application == app);
-            var email = new Emails();
-            if (exist == null) {
-                email.Email_1 = "somnuk.wk@bcircle.co.th";
-                email.Email_2 = "somnuk.wk@outlook.com";
-                email.Enable = true;
-                email.Application = app;
-                db.Emails.Add(email);
-                db.SaveChanges();
-            }
-        }
-
         public bool AddUser(string username, string password) {
             var hashedKey = Convert.ToBase64String(KeyDerivation.Pbkdf2(
             password: password,
