@@ -18,8 +18,6 @@ namespace CentralLogger.Services {
         readonly string baseUrl;
         public EmailService(IConfiguration configuration, IHttpContextAccessor httpContextAccessor) {
 
-            Console.WriteLine("Create MailService instance");
-
             this.configuration = configuration;
             this.baseUrl = $"{httpContextAccessor.HttpContext.Request.Scheme}://{httpContextAccessor.HttpContext.Request.Host}";
             timer = new Timer(100);

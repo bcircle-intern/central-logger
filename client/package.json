@@ -46,7 +46,7 @@
     "webpack-cli": "^3.0.8"
   },
   "scripts": {
-    "start": "parcel watch index.html -d ../src/CentralLogger/wwwroot --public-url /",
+    "start": "parcel index.html",
     "build": "parcel build index.html -d ../src/CentralLogger/wwwroot --public-url /"
   },
   "repository": {

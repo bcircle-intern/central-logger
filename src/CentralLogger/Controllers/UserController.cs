@@ -20,7 +20,6 @@ namespace CentralLogger.Controllers
         readonly IHubContext<LogHub> hubContext;
         readonly UserService userService;
 
-
         public UserController(CentralLoggerContext db, IHubContext<LogHub> hubContext, EmailService email, UserService userService)
         {
             this.db = db;

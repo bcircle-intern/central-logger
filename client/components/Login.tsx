@@ -87,7 +87,7 @@ export class Login extends React.Component<Props, State> {
                                 <Form size="large">
                                     <Segment basic>
                                         <Form.Input fluid icon="user" iconPosition="left" placeholder="Username"
-                                            onChange={this.handleUserChange} className="" />
+                                            onChange={this.handleUserChange} className="" autoFocus />
                                         <Form.Input
                                             fluid
                                             icon="lock"
