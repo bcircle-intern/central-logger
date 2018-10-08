@@ -11,26 +11,18 @@ type Props = {
     // tslint:disable-next-line:variable-name
     onDelete: (string) => void
     // tslint:disable-next-line:variable-name
-    onAppEdit: (string) => void
-    // tslint:disable-next-line:variable-name
-    onEmail1Edit: (string) => void
-    // tslint:disable-next-line:variable-name
-    onEmail2Edit: (string) => void
-    // tslint:disable-next-line:variable-name
-    onEmail3Edit: (string) => void
-    // tslint:disable-next-line:variable-name
-    onEnableEdit: (boolean) => void
-    onSave: () => void
-    editEmail1: string
-    editEmail2: string
-    editEmail3: string
-    editEnable: boolean
+    onSave: (GetEmail: GetEmail) => void
 }
 type State = {
     status: string
     appName: string
     showEdit: boolean
     checked: boolean
+    editApp: string
+    editEmail1: string
+    editEmail2: string
+    editEmail3: string
+    editEnable: boolean
 }
 
 export class ManageItems extends React.Component<Props, State> {
@@ -40,7 +32,12 @@ export class ManageItems extends React.Component<Props, State> {
             status: "",
             appName: "",
             showEdit: false,
-            checked: this.props.list.enable
+            checked: this.props.list.enable,
+            editApp: null,
+            editEmail1: null,
+            editEmail2: null,
+            editEmail3: null,
+            editEnable: true,
         }
     }
     private handleChange = (value) => {
@@ -53,15 +50,10 @@ export class ManageItems extends React.Component<Props, State> {
         this.props.onDelete(this.props.list.application)
     }
     private onEdit = () => {
-        this.setState({ showEdit: true })
-        this.props.onAppEdit(this.props.list.application)
-        this.props.onEmail1Edit(this.props.list.email_1)
-        this.props.onEmail2Edit(this.props.list.email_2)
-        this.props.onEmail3Edit(this.props.list.email_3)
-        this.props.onEnableEdit(this.props.list.enable)
+        this.setState({ showEdit: true, editApp: this.props.list.application, editEmail1: this.props.list.email_1, editEmail2: this.props.list.email_2, editEmail3: this.props.list.email_3, editEnable: this.props.list.enable })
     }
     private onClose = () => {
-        if (this.props.editEmail1 !== this.props.list.email_1 || this.props.editEmail2 !== this.props.list.email_2 || this.props.editEmail3 !== this.props.list.email_3 || this.props.editEnable !== this.props.list.enable) {
+        if (this.state.editEmail1 !== this.props.list.email_1 || this.state.editEmail2 !== this.props.list.email_2 || this.state.editEmail3 !== this.props.list.email_3 || this.state.editEnable !== this.props.list.enable) {
             swal({
                 title: "คุณต้องการบันทึกหรือไม่?",
                 text: "พบการเปลี่ยนแปลงของข้อมูล",
@@ -72,42 +64,45 @@ export class ManageItems extends React.Component<Props, State> {
                 confirmButtonText: "Save"
             }).then((result) => {
                 if (result.value) {
-                    this.props.onSave()
-                    this.setState({ showEdit: false })
+                    let editManageList: GetEmail = {
+                        application: this.state.editApp,
+                        email_1: this.state.editEmail1,
+                        email_2: this.state.editEmail2,
+                        email_3: this.state.editEmail3,
+                        enable: this.state.editEnable
+                    }
+                    this.props.onSave(editManageList)
+                    this.setState({ showEdit: false, editApp: null, editEmail1: null, editEmail2: null, editEmail3: null, editEnable: this.props.list.enable })
                 } else {
-                    this.setState({ showEdit: false })
-                    this.props.onAppEdit(null)
-                    this.props.onEmail1Edit(null)
-                    this.props.onEmail2Edit(null)
-                    this.props.onEmail3Edit(null)
-                    this.props.onEnableEdit(null)
+                    this.setState({ showEdit: false, editApp: null, editEmail1: null, editEmail2: null, editEmail3: null, editEnable: this.props.list.enable })
                 }
             })
         } else {
-            this.setState({ showEdit: false })
-            this.props.onEmail1Edit(null)
-            this.props.onEmail2Edit(null)
-            this.props.onEmail3Edit(null)
-            this.props.onEnableEdit(null)
-            this.props.onAppEdit(null)
+            this.setState({ showEdit: false, editApp: null, editEmail1: null, editEmail2: null, editEmail3: null, editEnable: this.props.list.enable })
         }
     }
     private handleEmail1Edit = (_, { value }) => {
-        this.props.onEmail1Edit(value)
+        this.setState({ editEmail1: value })
     }
     private handleEmail2Edit = (_, { value }) => {
-        this.props.onEmail2Edit(value)
+        this.setState({ editEmail2: value })
     }
     private handleEmail3Edit = (_, { value }) => {
-        this.props.onEmail3Edit(value)
+        this.setState({ editEmail3: value })
     }
     private haddleEnableEdit = (value) => {
-        this.setState({ checked: value })
-        this.props.onEnableEdit(value)
+        this.setState({ checked: value, editEnable: value })
     }
     private onSave = () => {
-        this.props.onSave()
-        this.setState({ showEdit: false })
+        let editManageList: GetEmail = {
+            application: this.state.editApp,
+            email_1: this.state.editEmail1,
+            email_2: this.state.editEmail2,
+            email_3: this.state.editEmail3,
+            enable: this.state.editEnable
+        }
+        this.props.onSave(editManageList)
+        this.setState({ showEdit: false, editApp: null, editEmail1: null, editEmail2: null, editEmail3: null, editEnable: this.props.list.enable })
     }
     public render() {
         let status: SemanticICONS = "circle"

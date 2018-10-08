@@ -15,7 +15,6 @@ import { Route, Switch, Link } from "react-router-dom";
 import { Chart } from "./Chart";
 import { Manage } from "./Manage";
 import { Line } from "./Line";
-import { Unsubscribe } from "./Unsubscribe";
 import { UserList } from "./UserList"
 import swal from "sweetalert2"
 import { scaleDown as Menu } from "react-burger-menu"
@@ -39,23 +38,14 @@ type State = {
     selectDay: Moment
     endDay: Moment
     startDay: Moment
-    noLog: boolean
     allIp: any[]
     allApp: any[]
     selectIp: string
     selectApp: string
     loading: boolean
-    items: Log[]
-    isLoading: boolean
-    cursor: 0
-    error: string
     logLenght: number
     newSearch: boolean
     logDate: Log[]
-    onChart: boolean
-    styleLog: string
-    render: boolean
-    styleChart: string
     countInfo: number[]
     countError: number[]
     countDebug: number[]
@@ -64,21 +54,8 @@ type State = {
     countCritical: number[]
     emailList: GetEmail[]
     allMailApp: any[]
-    newApp: string
-    newEmail1: string
-    newEmail2: string
-    newEmail3: string
-    newEnable: boolean
-    openMenu: boolean
-    editApp: string
-    editEmail1: string
-    editEmail2: string
-    editEmail3: string
-    editEnable: boolean
     userList: string[]
-    newUser: string
-    newPassword1: string
-    newPassword2: string
+    openMenu: boolean
 }
 
 export class Body extends React.Component<any, State> {
@@ -94,23 +71,14 @@ export class Body extends React.Component<any, State> {
             selectDay: moment(),
             endDay: moment().endOf("day"),
             startDay: moment().startOf("day"),
-            noLog: true,
             allIp: [],
             allApp: [],
             selectIp: "",
             selectApp: "",
             loading: true,
-            items: null,
-            isLoading: true,
-            cursor: 0,
-            error: "",
             logLenght: 0,
             newSearch: false,
             logDate: [],
-            onChart: true,
-            styleLog: "slideInRight",
-            render: null,
-            styleChart: "slideInLeft",
             countInfo: null,
             countDebug: null,
             countError: null,
@@ -118,21 +86,9 @@ export class Body extends React.Component<any, State> {
             countWarning: null,
             countCritical: null,
             emailList: [],
-            newApp: null,
-            newEmail1: null,
-            newEmail2: null,
-            newEmail3: null,
-            newEnable: true,
-            openMenu: false,
-            editApp: null,
-            editEmail1: null,
-            editEmail2: null,
-            editEmail3: null,
-            editEnable: true,
             userList: [],
-            newUser: "",
-            newPassword1: "",
-            newPassword2: ""
+            openMenu: false,
+
         }
         this.LogDate = []
         this.LogNow = []
@@ -272,7 +228,6 @@ export class Body extends React.Component<any, State> {
         this.LoggerApi.AddEmails(data).then(response => {
             swal("Save!", "Save Complete!", "success");
             this.initmailList()
-            this.setState({ newApp: null, newEmail1: null, newEmail2: null, newEmail3: null, newEnable: true })
         }).catch(err => {
             if (err.response.status === 401) {
                 this.props.onLogoutPlease()
@@ -283,7 +238,6 @@ export class Body extends React.Component<any, State> {
         this.LoggerApi.UpdateEmail(data).then(response => {
             swal("แก้ไขเรียบร้อย!", "", "success");
             this.initmailList()
-            this.setState({ editApp: null, editEmail1: null, editEmail2: null, editEmail3: null, editEnable: null })
         }).catch(err => {
             if (err.response.status === 401) {
                 this.props.onLogoutPlease()
@@ -294,7 +248,6 @@ export class Body extends React.Component<any, State> {
         this.LoggerApi.AddUser(data).then(response => {
             swal("บันทึกผู้ใช้เรียบร้อย!", "", "success");
             this.initUserList()
-            this.setState({ newUser: "", newPassword1: "", newPassword2: "" })
         }).catch(err => {
             if (err.response.status === 401) {
                 this.props.onLogoutPlease()
@@ -323,7 +276,6 @@ export class Body extends React.Component<any, State> {
 
         connection.onclose((err) => {
             // alert("SignalR เกิดปัญหาการเชื่อมต่อ");
-            console.error(err)
         });
 
         connection.on("LogReceived", (log: Log) => {
@@ -331,6 +283,7 @@ export class Body extends React.Component<any, State> {
             this.LogDate.unshift(log)
             this.updateLogNow();
         });
+        // tslint:disable-next-line:no-console
         connection.start().catch(err => console.error(err.toString()));
     }
 
@@ -344,72 +297,19 @@ export class Body extends React.Component<any, State> {
             this.setState({ logDate: this.LogDate })
         }
     })
-    private onNewUser = (value) => {
-        this.setState({ newUser: value })
-    }
-    private onNewPassword1 = (value) => {
-        this.setState({ newPassword1: value })
-    }
-    private onNewPassword2 = (value) => {
-        this.setState({ newPassword2: value })
-    }
-    private onNewApp = (value) => {
-        this.setState({ newApp: value })
-    }
-    private onNewEmail1 = (value) => {
-        this.setState({ newEmail1: value })
-    }
-    private onNewEmail2 = (value) => {
-        this.setState({ newEmail2: value })
-    }
-    private onNewEmail3 = (value) => {
-        this.setState({ newEmail3: value })
-    }
-    private onNewEnable = (value) => {
-        this.setState({ newEnable: value })
-    }
-    private onEditApp = (value) => {
-        this.setState({ editApp: value })
-    }
-    private onEditEmail1 = (value) => {
-        this.setState({ editEmail1: value })
-    }
-    private onEditEmail2 = (value) => {
-        this.setState({ editEmail2: value })
-    }
-    private onEditEmail3 = (value) => {
-        this.setState({ editEmail3: value })
-    }
-    private onEditEnable = (value) => {
-        this.setState({ editEnable: value })
-    }
     private onOpenMunu = () => {
         this.setState({ openMenu: false })
     }
-    private onNewSave = () => {
-        let newManageList: GetEmail = {
-            application: this.state.newApp,
-            email_1: this.state.newEmail1,
-            email_2: this.state.newEmail2,
-            email_3: this.state.newEmail3,
-            enable: this.state.newEnable
-        }
+    private onNewSave = (newManageList) => {
         this.initAddEmails(newManageList);
     }
-    private onEditSave = () => {
-        let editManageList: GetEmail = {
-            application: this.state.editApp,
-            email_1: this.state.editEmail1,
-            email_2: this.state.editEmail2,
-            email_3: this.state.editEmail3,
-            enable: this.state.editEnable
-        }
+    private onEditSave = (editManageList) => {
         this.initUpdateEmail(editManageList)
     }
-    private onSaveUser = () => {
+    private onSaveUser = (newUSer: string, newPass: string) => {
         let newUser: GetUsers = {
-            Users: this.state.newUser,
-            Password: this.state.newPassword1
+            Users: newUSer,
+            Password: newPass
         }
         this.initAddUser(newUser)
     }
@@ -455,9 +355,7 @@ export class Body extends React.Component<any, State> {
     public render() {
         let allday = moment(this.state.startDay).format("lll").toString() + " ถึง " + moment(this.state.endDay).format("lll").toString()
         let { startDay, endDay, loading, allApp, allIp, selectApp, selectIp, logLenght, newSearch, selectDay,
-            countDebug, countError, countInfo, countCritical, countTrace, countWarning, emailList, allMailApp
-            , newApp, newEmail1, newEmail2, newEmail3, newEnable, editApp, editEmail1, editEmail2, editEmail3, editEnable
-            , userList, newUser, newPassword1, newPassword2 } = this.state
+            countDebug, countError, countInfo, countCritical, countTrace, countWarning, emailList, allMailApp, userList } = this.state
         return (
             <Switch>
                 <Route exact path="/" render={() => {
@@ -709,13 +607,7 @@ export class Body extends React.Component<any, State> {
                             <main id="page-wrap">
                                 <BodyDiv>
                                     <Manage allApp={allMailApp} list={emailList} loading={loading}
-                                        onAppChange={this.onNewApp} onEmail1Change={this.onNewEmail1} onEmail2Change={this.onNewEmail2}
-                                        onEmail3Change={this.onNewEmail3} onEnableChange={this.onNewEnable} onNewSave={this.onNewSave}
-                                        newApp={newApp} newEmail1={newEmail1} newEmail2={newEmail2} newEmail3={newEmail3} newEnable={newEnable}
-                                        onDelete={this.OnDelete} onAppEdit={this.onEditApp} onEmail1Edit={this.onEditEmail1} onEmail2Edit={this.onEditEmail2}
-                                        onEmail3Edit={this.onEditEmail3} onEnableEdit={this.onEditEnable} onEditSave={this.onEditSave}
-                                        editEmail1={editEmail1} editEmail2={editEmail2} editEmail3={editEmail3} editEnable={editEnable}
-                                        editApp={editApp}
+                                        onNewSave={this.onNewSave} onDelete={this.OnDelete} onEditSave={this.onEditSave}
                                     />
                                 </BodyDiv>
                             </main>
@@ -777,9 +669,8 @@ export class Body extends React.Component<any, State> {
                             </Menu>
                             <main id="page-wrap">
                                 <BodyDiv>
-                                    <UserList loading={loading} list={userList} onUserChange={this.onNewUser} onPassword1Change={this.onNewPassword1}
-                                        onPassword2Change={this.onNewPassword2} pass1={newPassword1} pass2={newPassword2} onSave={this.onSaveUser}
-                                        onDelete={this.OnDeleteUser} user={newUser} />
+                                    <UserList loading={loading} list={userList} onSave={this.onSaveUser}
+                                        onDelete={this.OnDeleteUser} />
                                 </BodyDiv>
                             </main>
                         </div>

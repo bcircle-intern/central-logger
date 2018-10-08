@@ -15,22 +15,17 @@ type Props = {
     loading: boolean
     list: string[]
     // tslint:disable-next-line:variable-name
-    onUserChange: (string) => void
-    // tslint:disable-next-line:variable-name
-    onPassword1Change: (string) => void
-    // tslint:disable-next-line:variable-name
-    onPassword2Change: (string) => void
-    pass1: string
-    pass2: string
-    onSave: () => void
+    onSave: (newUSer: string, newPass: string) => void
     // tslint:disable-next-line:variable-name
     onDelete: (string) => void
-    user: string
 
 }
 type State = {
     open: boolean
     mismatch: boolean
+    newUser: string
+    newPassword1: string
+    newPassword2: string
 }
 
 export class UserList extends React.Component<Props, State> {
@@ -38,14 +33,17 @@ export class UserList extends React.Component<Props, State> {
         super(props)
         this.state = {
             open: false,
-            mismatch: null
+            mismatch: null,
+            newUser: "",
+            newPassword1: "",
+            newPassword2: ""
         };
     }
     private onOpens = () => {
         this.setState({ open: true })
     }
     private onClose = () => {
-        if (this.props.user !== "" || this.props.pass1 !== "" || this.props.pass2 !== "") {
+        if (this.state.newUser !== "" || this.state.newPassword1 !== "" || this.state.newPassword2 !== "") {
             swal({
                 title: "คุณต้องการบันทึกหรือไม่?",
                 text: "พบการเปลี่ยนแปลงของข้อมูล",
@@ -60,35 +58,33 @@ export class UserList extends React.Component<Props, State> {
                     this.onSave()
                 } else {
                     this.setState({ open: false })
-                    this.props.onUserChange(null)
-                    this.props.onPassword1Change("")
-                    this.props.onPassword2Change("")
+                    this.setState({ newUser: "", newPassword1: "", newPassword2: "" })
                 }
             })
         } else {
-            this.props.onUserChange(null)
-            this.props.onPassword1Change("")
-            this.props.onPassword2Change("")
+            this.setState({ newUser: "", newPassword1: "", newPassword2: "" })
             this.setState({ open: false })
         }
     }
     private onSave = () => {
-        if (this.props.pass1 !== this.props.pass2 || this.props.pass1 === "" || this.props.pass2 === "") {
+        if (this.state.newPassword1 !== this.state.newPassword2 || this.state.newPassword1 === "" || this.state.newPassword2 === "") {
             this.setState({ mismatch: true })
         } else {
             this.setState({ mismatch: false })
             this.setState({ open: false })
-            this.props.onSave()
+            this.props.onSave(this.state.newUser, this.state.newPassword1)
+            this.setState({ newUser: "", newPassword1: "", newPassword2: "" })
+
         }
     }
     private handleUserChange = (_, { value }) => {
-        this.props.onUserChange(value)
+        this.setState({ newUser: value })
     }
     private handlePass1Change = (_, { value }) => {
-        this.props.onPassword1Change(value)
+        this.setState({ newPassword1: value })
     }
     private handlePass2Change = (_, { value }) => {
-        this.props.onPassword2Change(value)
+        this.setState({ newPassword2: value })
     }
     public render() {
         let style = {
@@ -101,7 +97,7 @@ export class UserList extends React.Component<Props, State> {
                     <Segment textAlign="center" inverted color="olive" size="large">
                         <Header as="h2" floated="left">
                             User
-                    </Header>
+                        </Header>
                         <Icon style={style} size="big" />
                         <Button onClick={this.onOpens} color="green" circular icon="plus" floated="right" />
                         <Modal open={this.state.open} >

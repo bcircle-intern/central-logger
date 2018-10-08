@@ -1,3 +1,3 @@
 export function getApiUrl() {
-    return ""
+    return "http://localhost:5000"
 }

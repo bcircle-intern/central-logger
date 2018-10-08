@@ -1,7 +1,7 @@
 import React from "react"
 import { Log, LogLevel } from "../share/LoggerApi";
 import { Table, Icon, SemanticCOLORS, Popup } from "semantic-ui-react"
-import { Divider, Segment } from 'semantic-ui-react'
+import { Divider, Segment } from "semantic-ui-react"
 import moment from "moment"
 import "moment/locale/th"
 import "/css/Body.css"
@@ -26,13 +26,13 @@ export class Logs extends React.Component<LogProps, State> {
         let color: SemanticCOLORS = "red"
         switch (this.props.logsNow.logLevel) {
             case 1:
-                color = "blue"
+                color = "green"
                 break
             case 2:
                 color = "grey"
                 break
             case 3:
-                color = "yellow"
+                color = "blue"
                 break
             case 4:
                 color = "red"

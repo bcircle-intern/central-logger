@@ -4,8 +4,6 @@ import { ManageItems } from "./ManageItems"
 import "react-datepicker/dist/react-datepicker.css";
 import { Log, GetEmail } from "../share/LoggerApi"
 import "/css/Body.css"
-import { LoggerApi, manage } from "../share/LoggerApi"
-import { getApiUrl } from "../share/Configuration"
 import Switch from "react-switch";
 import swal from "sweetalert2"
 import * as EmailValidator from "email-validator";
@@ -15,44 +13,21 @@ type Props = {
     list: GetEmail[]
     loading: boolean
     // tslint:disable-next-line:variable-name
-    onAppChange: (string) => void
-    // tslint:disable-next-line:variable-name
-    onEmail1Change: (string) => void
-    // tslint:disable-next-line:variable-name
-    onEmail2Change: (string) => void
-    // tslint:disable-next-line:variable-name
-    onEmail3Change: (string) => void
-    // tslint:disable-next-line:variable-name
-    onEnableChange: (boolean) => void
-    // tslint:disable-next-line:variable-name
     onDelete: (string) => void
     // tslint:disable-next-line:variable-name
-    onAppEdit: (string) => void
     // tslint:disable-next-line:variable-name
-    onEmail1Edit: (string) => void
-    // tslint:disable-next-line:variable-name
-    onEmail2Edit: (string) => void
-    // tslint:disable-next-line:variable-name
-    onEmail3Edit: (string) => void
-    // tslint:disable-next-line:variable-name
-    onEnableEdit: (boolean) => void
-    onEditSave: () => void
-    onNewSave: () => void
-    newApp: string
-    newEmail1: string
-    newEmail2: string
-    newEmail3: string
-    newEnable: boolean
-    editApp: string
-    editEmail1: string
-    editEmail2: string
-    editEmail3: string
-    editEnable: boolean
+    onEditSave: (GetEmail: GetEmail) => void
+    onNewSave: (GetEmail: GetEmail) => void
 }
 type State = {
     manage: GetEmail[]
     open: boolean
     checked: boolean
+    newApp: string
+    newEmail1: string
+    newEmail2: string
+    newEmail3: string
+    newEnable: boolean
 }
 
 export class Manage extends React.Component<Props, State> {
@@ -61,7 +36,12 @@ export class Manage extends React.Component<Props, State> {
         this.state = {
             manage: null,
             open: null,
-            checked: true
+            checked: true,
+            newApp: null,
+            newEmail1: null,
+            newEmail2: null,
+            newEmail3: null,
+            newEnable: true,
         };
     }
     public onOpens = () => {
@@ -70,7 +50,7 @@ export class Manage extends React.Component<Props, State> {
     public componentDidMount() {
     }
     private onClose = () => {
-        if (this.props.newApp !== null || this.props.newEmail1 !== null || this.props.newEmail2 !== null || this.props.newEmail3 !== null) {
+        if (this.state.newApp !== null || this.state.newEmail1 !== null || this.state.newEmail2 !== null || this.state.newEmail3 !== null) {
             swal({
                 title: "คุณต้องการบันทึกหรือไม่?",
                 text: "พบการเปลี่ยนแปลงของข้อมูล",
@@ -83,60 +63,62 @@ export class Manage extends React.Component<Props, State> {
                 if (result.value) {
                     this.onSave()
                 } else {
-                    this.setState({ open: false })
-                    this.props.onEmail1Change(null)
-                    this.props.onEmail2Change(null)
-                    this.props.onEmail3Change(null)
-                    this.props.onEnableChange(true)
+                    this.setState({ open: false, newEmail1: null, newEmail2: null, newEmail3: null, newEnable: true })
                 }
             })
         } else { this.setState({ open: false }) }
     }
     private handleChange = (value) => {
-        this.setState({ checked: value })
-        this.props.onEnableChange(value)
+        this.setState({ checked: value, newEnable: value })
     }
     private setApp = (_, { value }) => {
-        this.props.onAppChange(value)
+        this.setState({ newApp: value })
     }
     private handleEmail1Change = (_, { value }) => {
-        this.props.onEmail1Change(value)
+        this.setState({ newEmail1: value })
     }
     private handleEmail2Change = (_, { value }) => {
-        this.props.onEmail2Change(value)
+        this.setState({ newEmail2: value })
     }
     private handleEmail3Change = (_, { value }) => {
-        this.props.onEmail3Change(value)
+        this.setState({ newEmail3: value })
     }
     private onSave = () => {
-        if (this.props.newApp === null) {
+        if (this.state.newApp === null) {
             swal({
                 title: "โปรดเลือก Application เพื่อตั้งค่า",
                 timer: 1000
             })
-        } else if (this.props.newEmail1 === null && this.props.newEmail2 === null && this.props.newEmail3 === null) {
+        } else if (this.state.newEmail1 === null && this.state.newEmail2 === null && this.state.newEmail3 === null) {
             swal({
                 title: "โปรดกรอกอย่างน้อย 1 อีเมล์",
                 timer: 1000
             })
-        } else if (this.props.newEmail1 !== "" && !EmailValidator.validate(this.props.newEmail1)) {
+        } else if (this.state.newEmail1 !== "" && !EmailValidator.validate(this.state.newEmail1)) {
             swal({
                 title: "รูปแบบ email1 ผิดพลาด.",
                 timer: 1000
             })
-        } else if (this.props.newEmail2 !== null && this.props.newEmail2 !== "" && !EmailValidator.validate(this.props.newEmail2)) {
+        } else if (this.state.newEmail2 !== null && this.state.newEmail2 !== "" && !EmailValidator.validate(this.state.newEmail2)) {
             swal({
                 title: "รูปแบบ email2 ผิดพลาด.",
                 timer: 1000
             })
-        } else if (this.props.newEmail3 !== null && this.props.newEmail3 !== "" && !EmailValidator.validate(this.props.newEmail3)) {
+        } else if (this.state.newEmail3 !== null && this.state.newEmail3 !== "" && !EmailValidator.validate(this.state.newEmail3)) {
             swal({
                 title: "รูปแบบ email3 ผิดพลาด.",
                 timer: 1000
             })
         } else {
-            this.props.onNewSave()
-            this.setState({ open: false })
+            let newManageList: GetEmail = {
+                application: this.state.newApp,
+                email_1: this.state.newEmail1,
+                email_2: this.state.newEmail2,
+                email_3: this.state.newEmail3,
+                enable: this.state.newEnable
+            }
+            this.props.onNewSave(newManageList)
+            this.setState({ open: false, newEmail1: null, newEmail2: null, newEmail3: null, newEnable: true })
         }
 
     }
@@ -165,7 +147,7 @@ export class Manage extends React.Component<Props, State> {
                                     <Form.Field>
                                         <Icon style={style} size="large" name="box" />
                                         Application :&nbsp;<br /><br />
-                                        <Dropdown className="dropdown" placeholder="All Application" closeOnChange selection options={this.props.allApp} onChange={this.setApp} value={this.props.newApp} />
+                                        <Dropdown className="dropdown" placeholder="All Application" closeOnChange selection options={this.props.allApp} onChange={this.setApp} value={this.state.newApp} />
                                     </Form.Field>    <Form.Field>
                                         <Icon style={style} size="large" name="mail" />
                                         First Email :&nbsp;<br /><br /><Input placeholder="Email1..." width={1} onChange={this.handleEmail1Change} />
@@ -214,10 +196,8 @@ export class Manage extends React.Component<Props, State> {
                                         </Table.Row>
                                     </Table.Header>
                                     <Table.Body>
-                                        {this.props.list.map((x, key) => <ManageItems onAppEdit={this.props.onAppEdit} onEmail1Edit={this.props.onEmail1Edit} onEmail2Edit={this.props.onEmail2Edit}
-                                            onEmail3Edit={this.props.onEmail3Edit} onEnableEdit={this.props.onEnableEdit} onDelete={this.props.onDelete} list={x} key={key}
-                                            onSave={this.props.onEditSave} editEmail1={this.props.editEmail1} editEmail2={this.props.editEmail2} editEmail3={this.props.editEmail3}
-                                            editEnable={this.props.editEnable} />)}
+                                        {this.props.list.map((x, key) => <ManageItems onDelete={this.props.onDelete} list={x} key={key}
+                                            onSave={this.props.onEditSave} />)}
                                     </Table.Body>
                                 </Table>
                             </div>
