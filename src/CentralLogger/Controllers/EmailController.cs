@@ -19,16 +19,10 @@ namespace CentralLogger.Controllers {
         public EmailController(CentralLoggerContext db) {
             this.db = db;
         }
-<<<<<<< HEAD
-        
-        [HttpPost]
-        public async Task<ActionResult> AddEmailsAsyncAsync([FromBody] GetEmail x) {
-=======
 
         [BasicAuthorize(typeof(BasicAuthorizeFilter))]
         [HttpPost]
         public async Task<ActionResult> AddEmails([FromBody] GetEmail x) {
->>>>>>> 8f46ab943ebd8c8dc26c51ec3db1771f21581960
             var applist = await db.Emails.Where(m => m.Application == x.Application).Select(m => m.Application).FirstOrDefaultAsync();
             if (applist != x.Application && x.Application != null) {
                 db.Emails.Add(new Emails {

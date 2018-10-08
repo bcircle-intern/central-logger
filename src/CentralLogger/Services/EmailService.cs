@@ -16,13 +16,7 @@ namespace CentralLogger.Services {
         readonly IConfiguration configuration;
         // private readonly HttpContext context;
         readonly string baseUrl;
-<<<<<<< HEAD
-        
-=======
->>>>>>> 8f46ab943ebd8c8dc26c51ec3db1771f21581960
         public EmailService(IConfiguration configuration, IHttpContextAccessor httpContextAccessor) {
-
-            Console.WriteLine("Create MailService instance");
 
             this.configuration = configuration;
             this.baseUrl = $"{httpContextAccessor.HttpContext.Request.Scheme}://{httpContextAccessor.HttpContext.Request.Host}";

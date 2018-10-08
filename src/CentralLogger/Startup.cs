@@ -20,6 +20,7 @@ using Microsoft.AspNetCore.Cryptography.KeyDerivation;
 using CentralLogger.Services;
 using System.Threading;
 using CentralLogger.Controllers;
+using CentralLogger.Models;
 
 namespace CentralLogger {
     public class Startup {
@@ -78,19 +79,12 @@ namespace CentralLogger {
             }
 
             app.UseCors(builder => builder.AllowAnyHeader().AllowAnyMethod().AllowAnyOrigin().AllowCredentials());
-            app.UseMvc();
             app.UseSignalR(options => {
                 options.MapHub<LogHub>("/LogHub");
             });
 
-            GenrateDatabase(db, userService);
-        }
-
-        private void GenrateDatabase(CentralLoggerContext db, UserService userService) {
-            var createData = db.Database.EnsureCreated();
-            if (createData) {
-                userService.AddUser("admin", "admin");
-            }
+            app.UseMvc();
+            DbInitializer.Initialize(db, userService);
         }
     }
 }

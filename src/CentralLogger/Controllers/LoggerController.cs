@@ -37,11 +37,8 @@ namespace CentralLogger.Controllers {
         static JsonSerializerSettings jsonSettings = new JsonSerializerSettings { ContractResolver = new CamelCasePropertyNamesContractResolver() };
         readonly IConfiguration configuration;
         readonly IHttpClientFactory httpClientFactory;
-<<<<<<< HEAD
-=======
         readonly LineContent lineContent = new LineContent();
 
->>>>>>> 8f46ab943ebd8c8dc26c51ec3db1771f21581960
 
         public LoggerController(CentralLoggerContext db, IHubContext<LogHub> hubContext, EmailService email, IHttpClientFactory httpClientFactory, IConfiguration configuration) {
             this.db = db;
@@ -107,11 +104,6 @@ namespace CentralLogger.Controllers {
             }
             return Enumerable.Empty<string>();
         }
-<<<<<<< HEAD
-        [HttpPost]
-        public async Task<ActionResult> AddLog([FromBody] GetLogInfos x) {
-=======
->>>>>>> 8f46ab943ebd8c8dc26c51ec3db1771f21581960
 
         [HttpPost]
         public async Task<ActionResult> AddLog([FromBody] GetLogInfos x) {
@@ -153,11 +145,6 @@ namespace CentralLogger.Controllers {
 
             var messages = $"CRITICAL ALERT {data.Application}  [ {data.Ip} ]\n► พบ Critical ที่:\n■ Application : {data.Application}\n■ Datetime : {data.DateTime}\n■ Category : {data.Category}\n■ IP : {data.Ip}\n■ Message : {data.Message}";
 
-<<<<<<< HEAD
-
-            var lineContent = new LineContent();
-=======
->>>>>>> 8f46ab943ebd8c8dc26c51ec3db1771f21581960
             lineContent.To = await db.Line.Where(a => a.ApplicationName == data.Application).Select(m => m.LineId).Distinct().ToListAsync();
             lineContent.Messages.Add(new LineMessage {
                 Type = "text",
