@@ -16,7 +16,10 @@ namespace CentralLogger.Services {
         readonly IConfiguration configuration;
         // private readonly HttpContext context;
         readonly string baseUrl;
+<<<<<<< HEAD
         
+=======
+>>>>>>> 8f46ab943ebd8c8dc26c51ec3db1771f21581960
         public EmailService(IConfiguration configuration, IHttpContextAccessor httpContextAccessor) {
 
             Console.WriteLine("Create MailService instance");
@@ -51,7 +54,8 @@ namespace CentralLogger.Services {
         }
 
         public async Task SendEmail(LogInfo data, string Email) {
-            string strUrl = $"{baseUrl}/api/Email/DisableEmail?email={Email}";
+            var strUrl = $"{baseUrl}/api/Email/DisableEmail?email={Email}";
+
             strUrl = strUrl.Replace("@", "%40");
             var subject = $"Critical Alert {data.Application} [ {data.Ip} ]";
             var body = $"Found Critical:<br>Application : {data.Application}<br>Datetime : {data.DateTime}<br>Category : {data.Category}<br>IP : {data.Ip}<br>Message : {data.Message}<br><br><br><hr><font size=\"1\">ถ้าต้องการยกเลิกการติดตามโปรดคลิกที่ปุ่มด้านล่าง :<br> <a href=\"{strUrl}\"><button type=\"button\" style=\"color: red\">ยกเลิกการแจ้งเตือน</button></a></font>";

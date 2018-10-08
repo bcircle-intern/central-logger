@@ -24,6 +24,7 @@ using CentralLogger.Models;
 using Newtonsoft.Json;
 using System.Net.Http.Headers;
 using Newtonsoft.Json.Serialization;
+using CentralLogger.Attributes;
 
 namespace CentralLogger.Controllers {
     [Route("api/[controller]/[action]")]
@@ -36,6 +37,11 @@ namespace CentralLogger.Controllers {
         static JsonSerializerSettings jsonSettings = new JsonSerializerSettings { ContractResolver = new CamelCasePropertyNamesContractResolver() };
         readonly IConfiguration configuration;
         readonly IHttpClientFactory httpClientFactory;
+<<<<<<< HEAD
+=======
+        readonly LineContent lineContent = new LineContent();
+
+>>>>>>> 8f46ab943ebd8c8dc26c51ec3db1771f21581960
 
         public LoggerController(CentralLoggerContext db, IHubContext<LogHub> hubContext, EmailService email, IHttpClientFactory httpClientFactory, IConfiguration configuration) {
             this.db = db;
@@ -45,6 +51,7 @@ namespace CentralLogger.Controllers {
             this.httpClientFactory = httpClientFactory;
         }
 
+        [BasicAuthorize(typeof(BasicAuthorizeFilter))]
         [HttpGet]
         public ActionResult<IEnumerable<string>> ShowAll() {
             try {
@@ -55,6 +62,7 @@ namespace CentralLogger.Controllers {
             }
         }
 
+        [BasicAuthorize(typeof(BasicAuthorizeFilter))]
         [HttpPost]
         public async Task<ActionResult<List<LogInfo>>> Search(SearchLog search) {
             var perSection = 50;
@@ -76,11 +84,13 @@ namespace CentralLogger.Controllers {
             return Ok(new { LogInfo = result, DataLength = dataLength });
         }
 
+        [BasicAuthorize(typeof(BasicAuthorizeFilter))]
         [HttpGet]
         public IEnumerable<string> GetIP() {
             var Ip = db.LogInfos.Select(m => m.Ip).Distinct();
             return Ip.ToList();
         }
+
 
         [HttpGet]
         public IEnumerable<string> GetAllApp() {
@@ -88,6 +98,7 @@ namespace CentralLogger.Controllers {
             return App.ToList();
         }
 
+        [BasicAuthorize(typeof(BasicAuthorizeFilter))]
         [HttpGet("{ip}")]
         public IEnumerable<string> GetApp(string ip) {
             if (!string.IsNullOrEmpty(ip)) {
@@ -96,9 +107,15 @@ namespace CentralLogger.Controllers {
             }
             return Enumerable.Empty<string>();
         }
+<<<<<<< HEAD
         [HttpPost]
         public async Task<ActionResult> AddLog([FromBody] GetLogInfos x) {
+=======
+>>>>>>> 8f46ab943ebd8c8dc26c51ec3db1771f21581960
 
+        [HttpPost]
+        public async Task<ActionResult> AddLog([FromBody] GetLogInfos x) {
+            x.DateTime = x.DateTime.ToLocalTime();
             db.LogInfos.Add(new LogInfo {
                 LogLevel = x.LogLevel,
                 Message = x.Message,
@@ -127,7 +144,7 @@ namespace CentralLogger.Controllers {
                 email.Enqueue(data);
                 await SendLine(data);
             }
-            db.SaveChanges();
+            await db.SaveChangesAsync();
 
             await hubContext.Clients.All.SendAsync("LogReceived", data);
             return Ok();
@@ -136,8 +153,11 @@ namespace CentralLogger.Controllers {
 
             var messages = $"CRITICAL ALERT {data.Application}  [ {data.Ip} ]\n► พบ Critical ที่:\n■ Application : {data.Application}\n■ Datetime : {data.DateTime}\n■ Category : {data.Category}\n■ IP : {data.Ip}\n■ Message : {data.Message}";
 
+<<<<<<< HEAD
 
             var lineContent = new LineContent();
+=======
+>>>>>>> 8f46ab943ebd8c8dc26c51ec3db1771f21581960
             lineContent.To = await db.Line.Where(a => a.ApplicationName == data.Application).Select(m => m.LineId).Distinct().ToListAsync();
             lineContent.Messages.Add(new LineMessage {
                 Type = "text",

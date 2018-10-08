@@ -70,7 +70,7 @@ namespace CentralLogProvider {
             var date = DateTime.Now.ToString("dd-MM-yyyy HH:mm:ss.fff zzz");
             var log = $"{date} [{logLevel.ToString()}] {categoryName}: {states}";
             queue.Enqueue(new LogMessage {
-                DateTime = DateTime.Now.ToLocalTime(),
+                DateTime = DateTime.Now,
                 Application = AppContext,
                 LogLevel = logLevel.ToString(),
                 Message = state.ToString(),

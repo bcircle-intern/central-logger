@@ -14,7 +14,6 @@
         "no-empty": false,
         "eofline": false,
         "prefer-const": false,
-        "no-console": false,
         "ordered-imports": false,
         "max-line-length": false
     },

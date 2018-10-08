@@ -30,6 +30,7 @@ namespace CentralLogger {
 
     public class Users {
         [Key]
+        [JsonIgnore]
         public int Id { set; get; }
         public string User { set; get; }
         public string Password { set; get; }
@@ -43,12 +44,23 @@ namespace CentralLogger {
         public string ApplicationName { set; get; }
     }
     public class CountLogs {
-        public IEnumerable<int> dataInfos { set; get; }
-        public IEnumerable<int> dataErrors { set; get; }
-        public IEnumerable<int> dataDebugs { set; get; }
-        public IEnumerable<int> dataTraces { set; get; }
-        public IEnumerable<int> dataWarnings { set; get; }
-        public IEnumerable<int> dataCriticals { set; get; }
+        [JsonProperty("dataInfos")]
+        public IEnumerable<int> DataInfos { set; get; }
+
+        [JsonProperty("dataErrors")]
+        public IEnumerable<int> DataErrors { set; get; }
+
+        [JsonProperty("dataDebugs")]
+        public IEnumerable<int> DataDebugs { set; get; }
+
+        [JsonProperty("dataTraces")]
+        public IEnumerable<int> DataTraces { set; get; }
+
+        [JsonProperty("dataWarnings")]
+        public IEnumerable<int> DataWarnings { set; get; }
+
+        [JsonProperty("dataCriticals")]
+        public IEnumerable<int> DataCriticals { set; get; }
     }
 
     public enum LogLevel {

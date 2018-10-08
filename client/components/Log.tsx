@@ -26,13 +26,13 @@ export class Logs extends React.Component<LogProps, State> {
         let color: SemanticCOLORS = "red"
         switch (this.props.logsNow.logLevel) {
             case 1:
-                color = "green"
+                color = "blue"
                 break
             case 2:
                 color = "grey"
                 break
             case 3:
-                color = "blue"
+                color = "yellow"
                 break
             case 4:
                 color = "red"

@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using CentralLogger.Attributes;
 using CentralLogger.Hubs;
 using CentralLogger.Models;
 using CentralLogger.Services;
@@ -12,13 +13,22 @@ namespace CentralLogger.Controllers
 {
     [Route("api/[controller]/[action]")]
     [ApiController]
+<<<<<<< HEAD
     public class UserController : ControllerBase
     {
+=======
+
+    public class UserController : ControllerBase {
+>>>>>>> 8f46ab943ebd8c8dc26c51ec3db1771f21581960
         readonly EmailService email;
         readonly CentralLoggerContext db;
         readonly IHubContext<LogHub> hubContext;
         readonly UserService userService;
 
+<<<<<<< HEAD
+=======
+
+>>>>>>> 8f46ab943ebd8c8dc26c51ec3db1771f21581960
         public UserController(CentralLoggerContext db, IHubContext<LogHub> hubContext, EmailService email, UserService userService)
         {
             this.db = db;
@@ -26,12 +36,21 @@ namespace CentralLogger.Controllers
             this.email = email;
             this.userService = userService;
         }
+<<<<<<< HEAD
         [HttpPost]
         public async Task<ActionResult> LoginRequest([FromBody] GetLoginRequest request)
         {
             var IsAuthorized = await userService.IsAuthorized(request.User, request.Pass);
             if (IsAuthorized)
             {
+=======
+
+
+        [HttpPost]
+        public async Task<ActionResult> LoginRequest([FromBody] GetLoginRequest request) {
+            var IsAuthorized = await userService.IsAuthorized(request.User, request.Pass);
+            if (IsAuthorized) {
+>>>>>>> 8f46ab943ebd8c8dc26c51ec3db1771f21581960
                 //  base64 UTF8 (request.User:request.pass)
                 var account = $"{request.User}:{request.Pass}";
                 var accountBytes = System.Text.Encoding.UTF8.GetBytes(account);
@@ -42,9 +61,14 @@ namespace CentralLogger.Controllers
             return Unauthorized();
         }
 
+        [BasicAuthorize(typeof(BasicAuthorizeFilter))]
         [HttpPost]
+<<<<<<< HEAD
         public ActionResult AddUser([FromBody] GetUsers data)
         {
+=======
+        public ActionResult AddUser([FromBody] GetUsers data) {
+>>>>>>> 8f46ab943ebd8c8dc26c51ec3db1771f21581960
             var userlist = db.Users.Where(x => x.User == data.Users).Select(x => x.User).FirstOrDefault();
             if (userlist != data.Users && data.Users != null)
             {
@@ -57,6 +81,7 @@ namespace CentralLogger.Controllers
             }
         }
 
+        [BasicAuthorize(typeof(BasicAuthorizeFilter))]
         [HttpGet]
         public ActionResult DeleteUser(string User)
         {
@@ -71,6 +96,7 @@ namespace CentralLogger.Controllers
                 return BadRequest();
         }
 
+        [BasicAuthorize(typeof(BasicAuthorizeFilter))]
         [HttpGet]
         public ActionResult<IEnumerable<string>> ShowAllUser()
         {

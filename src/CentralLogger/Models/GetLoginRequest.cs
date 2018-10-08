@@ -6,7 +6,5 @@ namespace CentralLogger.Models {
         public string User { set; get; }
         [Required]
         public string Pass { set; get; }
-
     }
-
 }

@@ -74,14 +74,14 @@ export class Chart extends React.Component<Props, State> {
             },
             series: [
                 {
-                    name: "Info",
-                    type: "line",
-                    data: this.props.info
-                },
-                {
                     name: "Error",
                     type: "line",
                     data: this.props.error
+                },
+                {
+                    name: "Info",
+                    type: "line",
+                    data: this.props.info
                 },
                 {
                     name: "Debug",
@@ -110,10 +110,10 @@ export class Chart extends React.Component<Props, State> {
             marginRight: "10px"
         }
         return (
-                <Segment.Group>
-                    <Segment textAlign="center" inverted color="yellow">
+            <Segment.Group>
+                <Segment textAlign="center" inverted color="yellow">
                     <Header as="h2" floated="left">
-                    Log Chart
+                        Log Chart
                     </Header>
                     <Icon style={style} size="large" name="calendar alternate outline" />
                     <div className="ui input datepicker">
@@ -124,19 +124,19 @@ export class Chart extends React.Component<Props, State> {
                             isClearable={false}
                             placeholderText="Select Date"
                             className="inputdate" />
-                        </div>
-                    </Segment>
-                    <Segment textAlign="right" style={{ minHeight: "calc( 100vh - 230px )" }}>
-                        <div className="loglist" style={{ width: "100%" }}>
-                            <ReactEcharts
-                                option={option}
-                                notMerge={true}
-                                lazyUpdate={true}
-                                theme={"theme_name"}
-                            />
-                        </div>
-                    </Segment>
-                </Segment.Group>
+                    </div>
+                </Segment>
+                <Segment textAlign="right" style={{ minHeight: "calc( 100vh - 230px )" }}>
+                    <div className="loglist" style={{ width: "100%" }}>
+                        <ReactEcharts
+                            option={option}
+                            notMerge={true}
+                            lazyUpdate={true}
+                            theme={"theme_name"}
+                        />
+                    </div>
+                </Segment>
+            </Segment.Group>
         )
     }
 }

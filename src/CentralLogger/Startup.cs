@@ -19,6 +19,7 @@ using System.Security.Cryptography;
 using Microsoft.AspNetCore.Cryptography.KeyDerivation;
 using CentralLogger.Services;
 using System.Threading;
+using CentralLogger.Controllers;
 
 namespace CentralLogger {
     public class Startup {
@@ -40,14 +41,12 @@ namespace CentralLogger {
                 connectionString = envConnectionString;
             }
 
-            Console.WriteLine($"ConnectionString = {connectionString}");
-
             services.AddCors();
             services.AddDbContext<CentralLoggerContext>(options => options.UseNpgsql(connectionString));
             services.AddSignalR();
             services.AddHttpContextAccessor();
             services.AddScoped<UserService>();
-            services.AddSingleton<EmailService>();
+            services.AddScoped<EmailService>();
             services.AddHttpClient();
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
 
@@ -56,7 +55,7 @@ namespace CentralLogger {
             });
         }
 
-        public static void Configure(IApplicationBuilder app, IHostingEnvironment env, CentralLoggerContext db, UserService userService) {
+        public void Configure(IApplicationBuilder app, IHostingEnvironment env, CentralLoggerContext db, UserService userService) {
             var defaultOptions = new DefaultFilesOptions();
             defaultOptions.DefaultFileNames.Clear();
             defaultOptions.DefaultFileNames.Add("index.html");
@@ -87,14 +86,11 @@ namespace CentralLogger {
             GenrateDatabase(db, userService);
         }
 
-        private static void GenrateDatabase(CentralLoggerContext db, UserService userService) {
-            Console.WriteLine("Create DB");
+        private void GenrateDatabase(CentralLoggerContext db, UserService userService) {
             var createData = db.Database.EnsureCreated();
             if (createData) {
                 userService.AddUser("admin", "admin");
             }
-            userService.AddEmail("dotnet-script.dll");
-            Console.WriteLine("Create success");
         }
     }
 }

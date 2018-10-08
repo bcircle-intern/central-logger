@@ -327,6 +327,7 @@ export class Body extends React.Component<any, State> {
         });
 
         connection.on("LogReceived", (log: Log) => {
+            this.initGetChart(this.state.startDay.toDate())
             this.LogDate.unshift(log)
             this.updateLogNow();
         });

@@ -4,7 +4,7 @@
         <OutputType>Library</OutputType>
         <TargetFramework>netstandard2.0</TargetFramework>
         <ProjectGuid>{fa5892ec-6a88-4895-ab6e-7e0b4ffb20c3} </ProjectGuid>
-        <PackageVersion>0.2.0</PackageVersion>
+        <PackageVersion>0.3.0</PackageVersion>
         <PackageId>BCircle.CentralLogProvider</PackageId>
         <PackageIconUrl>https://www.picz.in.th/images/2018/08/08/BqspZq.png</PackageIconUrl>
         <PackageTags>b circle bcircle ControlLog</PackageTags>
@@ -13,7 +13,7 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <PackageReference Include="Jil" Version="2.16.0" />
+        <!-- <PackageReference Include="Jil" Version="2.16.0" /> -->
         <PackageReference Include="Microsoft.Extensions.Logging" Version="2.1.1" />
         <PackageReference Include="Newtonsoft.Json" Version="11.0.2" />
     </ItemGroup>

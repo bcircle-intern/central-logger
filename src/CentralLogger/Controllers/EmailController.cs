@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using CentralLogger.Attributes;
 using CentralLogger.Hubs;
 using CentralLogger.Models;
 using CentralLogger.Services;
@@ -18,9 +19,16 @@ namespace CentralLogger.Controllers {
         public EmailController(CentralLoggerContext db) {
             this.db = db;
         }
+<<<<<<< HEAD
         
         [HttpPost]
         public async Task<ActionResult> AddEmailsAsyncAsync([FromBody] GetEmail x) {
+=======
+
+        [BasicAuthorize(typeof(BasicAuthorizeFilter))]
+        [HttpPost]
+        public async Task<ActionResult> AddEmails([FromBody] GetEmail x) {
+>>>>>>> 8f46ab943ebd8c8dc26c51ec3db1771f21581960
             var applist = await db.Emails.Where(m => m.Application == x.Application).Select(m => m.Application).FirstOrDefaultAsync();
             if (applist != x.Application && x.Application != null) {
                 db.Emails.Add(new Emails {
@@ -37,6 +45,8 @@ namespace CentralLogger.Controllers {
             }
 
         }
+
+        [BasicAuthorize(typeof(BasicAuthorizeFilter))]
         [HttpGet]
         public async Task<IEnumerable<string>> SearchExceptApp() {
             /////ใช้ในการเลือกAppจากdata//////
@@ -45,6 +55,8 @@ namespace CentralLogger.Controllers {
             var result = appLog.Except(appMail);
             return result;
         }
+
+        [BasicAuthorize(typeof(BasicAuthorizeFilter))]
         [HttpPost]
         public async Task<ActionResult> UpdateEmail([FromBody] GetEmail Mail) {
             var applist = await db.Emails.Where(m => m.Application == Mail.Application).Select(m => m.Application).FirstOrDefaultAsync();
@@ -63,6 +75,7 @@ namespace CentralLogger.Controllers {
             }
         }
 
+        [BasicAuthorize(typeof(BasicAuthorizeFilter))]
         [HttpPost]
         public async Task<ActionResult> SetEnable(Boolean data) {
             db.Emails.Update(new Emails {
@@ -72,6 +85,7 @@ namespace CentralLogger.Controllers {
             return Ok();
         }
 
+        [BasicAuthorize(typeof(BasicAuthorizeFilter))]
         [HttpGet]
         public async Task<ActionResult> DeleteApp(string AppName) {
             var del = db.Emails.FirstOrDefault(o => o.Application == AppName);
@@ -83,6 +97,7 @@ namespace CentralLogger.Controllers {
                 return BadRequest();
         }
 
+        [BasicAuthorize(typeof(BasicAuthorizeFilter))]
         [HttpGet]
         public async Task<ActionResult<IEnumerable<GetEmail>>> ShowMailApp() {
             try {
@@ -119,8 +134,6 @@ namespace CentralLogger.Controllers {
                 return text;
             }
         }
-
-
     }
 
 }

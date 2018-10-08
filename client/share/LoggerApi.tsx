@@ -1,4 +1,5 @@
 import axios from "axios"
+import AppStorage from "./AppStorage";
 
 type SearchDate = {
     startDate: Date;
@@ -59,11 +60,17 @@ export type GetUsers = {
 export class LoggerApi {
     constructor(private url: string) {
     }
+    private getHeaders() {
+        let headers = {
+            headers: { Authorization: "Basic " + AppStorage.getAccessToken() }
+        }
+        return headers
+    }
     public getIp() {
-        return axios.get<string[]>(`${this.url}/api/Logger/getIP`)
+        return axios.get<string[]>(`${this.url}/api/Logger/getIP`, this.getHeaders())
     }
     public getApp(IP: string) {
-        return axios.get<string[]>(`${this.url}/api/Logger/getApp/${IP}`)
+        return axios.get<string[]>(`${this.url}/api/Logger/getApp/${IP}`, this.getHeaders())
     }
 
     public SearchLog(startDate: Date, endDate: Date, app: string, ip: string, start: number) {
@@ -73,7 +80,7 @@ export class LoggerApi {
             Appnow: app,
             IpNow: ip,
             Section: start
-        })
+        }, this.getHeaders())
     }
 
     public Login(user: string, pass: string) {
@@ -83,35 +90,35 @@ export class LoggerApi {
         })
     }
     public GetDataChart(date: Date) {
-        return axios.post<CountLogs>(`${this.url}/api/Summary/GetDataChart`, date)
+        return axios.post<CountLogs>(`${this.url}/api/Summary/GetDataChart`, date, this.getHeaders())
     }
     // แสดงอีเมล์กับแอปทั้งหมด
     public ShowMailApp() {
-        return axios.get<GetEmail[]>(`${this.url}/api/Email/ShowMailApp`)
+        return axios.get<GetEmail[]>(`${this.url}/api/Email/ShowMailApp`, this.getHeaders())
     }
     // ลบแอปอีเมล์
     public DeleteApp(AppName: string) {
-        return axios.get(`${this.url}/api/Email/DeleteApp?AppName=${AppName}`)
+        return axios.get(`${this.url}/api/Email/DeleteApp?AppName=${AppName}`, this.getHeaders())
     }
     // อัพเดท อีเมล์
     public UpdateEmail(data: GetEmail) {
-        return axios.post(`${this.url}/api/Email/UpdateEmail`, data)
+        return axios.post(`${this.url}/api/Email/UpdateEmail`, data, this.getHeaders())
     }
     // เรียกแอปที่ยังไม่ได้ตังค่า
     public SearchExceptApp() {
-        return axios.get<string[]>(`${this.url}/api/Email/SearchExceptApp`)
+        return axios.get<string[]>(`${this.url}/api/Email/SearchExceptApp`, this.getHeaders())
     }
     // เพิ่มแอปอีเมล์
     public AddEmails(data: GetEmail) {
-        return axios.post<GetEmail>(`${this.url}/api/Email/AddEmails`, data)
+        return axios.post<GetEmail>(`${this.url}/api/Email/AddEmails`, data, this.getHeaders())
     }
     public ShowAllUser() {
-        return axios.get<string[]>(`${this.url}/api/User/ShowAllUser`)
+        return axios.get<string[]>(`${this.url}/api/User/ShowAllUser`, this.getHeaders())
     }
     public AddUser(data: GetUsers) {
-        return axios.post<GetUsers>(`${this.url}/api/User/AddUser`, data)
+        return axios.post<GetUsers>(`${this.url}/api/User/AddUser`, data, this.getHeaders())
     }
     public DeleteUser(User: string) {
-        return axios.get(`${this.url}/api/User/DeleteUser?User=${User}`)
+        return axios.get(`${this.url}/api/User/DeleteUser?User=${User}`, this.getHeaders())
     }
 }
