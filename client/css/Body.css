@@ -30,8 +30,8 @@ body {
 }
 
 .dropdown {
-  height: 5px !important;
-  padding: 5px 5px;
+  min-height: auto !important;
+  height: 35px;
   max-width: auto;
 }
 
@@ -47,7 +47,7 @@ body {
   border-color: white;
   background-color: white;
   color: black;
-  height: 35px;
+  height: 25px;
 }
 
 .react-datepicker__time-list {

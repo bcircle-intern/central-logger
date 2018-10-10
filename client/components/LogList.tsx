@@ -103,9 +103,9 @@ export class LogList extends React.Component<Props, State> {
 
         return (
             <Segment.Group>
-                <Segment textAlign="center" inverted color="blue">
+                <Segment textAlign="center" inverted color="blue" size="tiny">
                     <Icon style={style} size="large" name="address book outline" />
-                    <Dropdown placeholder="All IP" closeOnChange selection options={this.props.allIp} onChange={this.setIp} value={this.props.selectIp} />
+                    <Dropdown className="dropdown" placeholder="All IP" closeOnChange selection options={this.props.allIp} onChange={this.setIp} value={this.props.selectIp} />
                     <Icon style={style} size="large" name="box" />
                     <Dropdown className="dropdown" disabled={this.props.selectIp === ""} placeholder="All Application" closeOnChange selection options={this.props.allApp} onChange={this.setApp} value={this.props.selectApp} />
                     <Icon style={style} size="large" name="calendar alternate outline" />

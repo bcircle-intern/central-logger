@@ -111,8 +111,8 @@ export class Chart extends React.Component<Props, State> {
         }
         return (
             <Segment.Group>
-                <Segment textAlign="center" inverted color="yellow">
-                    <Header as="h2" floated="left">
+                <Segment textAlign="center" inverted color="yellow" size="mini">
+                    <Header as="h3" floated="left">
                         Log Chart
                     </Header>
                     <Icon style={style} size="large" name="calendar alternate outline" />
@@ -123,7 +123,8 @@ export class Chart extends React.Component<Props, State> {
                             onChange={this.setDay}
                             isClearable={false}
                             placeholderText="Select Date"
-                            className="inputdate" />
+                            className="inputdate"
+                        />
                     </div>
                 </Segment>
                 <Segment textAlign="right" style={{ minHeight: "calc( 100vh - 230px )" }}>

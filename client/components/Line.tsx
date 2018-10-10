@@ -25,9 +25,9 @@ export class Line extends React.Component<Props, State> {
 
         return (
             <Segment.Group>
-                <Segment textAlign="center" inverted color="green">
-                    <Icon style={style} size="big" />
-                    <Header as="h2" floated="left">
+                <Segment textAlign="center" inverted color="green" size="mini">
+                    <Icon style={style} size="mini" />
+                    <Header as="h3" floated="left">
                         Line Account
                     </Header>
                 </Segment>

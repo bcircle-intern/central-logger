@@ -94,12 +94,12 @@ export class UserList extends React.Component<Props, State> {
         return (
             <div>
                 <Segment.Group>
-                    <Segment textAlign="center" inverted color="olive" size="large">
-                        <Header as="h2" floated="left">
+                    <Segment textAlign="center" inverted color="olive" size="mini">
+                        <Header as="h3" floated="left">
                             User
                         </Header>
-                        <Icon style={style} size="big" />
-                        <Button onClick={this.onOpens} color="green" circular icon="plus" floated="right" />
+                        <Icon style={style} size="mini" />
+                        <Button onClick={this.onOpens} color="green" circular icon="plus" floated="right" size="mini" />
                         <Modal open={this.state.open} >
                             <Modal.Header>เพิ่มผู้ใช้งาน</Modal.Header>
                             <Modal.Content scrolling>
