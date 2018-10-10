@@ -134,12 +134,12 @@ export class Manage extends React.Component<Props, State> {
         return (
             <div>
                 <Segment.Group>
-                    <Segment textAlign="center" inverted color="teal" size="large">
-                        <Header as="h2" floated="left">
+                    <Segment textAlign="center" inverted color="teal" size="mini">
+                        <Header as="h3" floated="left">
                             Email
                     </Header>
-                        <Icon style={style} size="big" />
-                        <Button onClick={this.onOpens} disabled={enables} color="olive" circular icon="plus" floated="right" />
+                        <Icon style={style} size="mini" />
+                        <Button onClick={this.onOpens} disabled={enables} color="olive" circular icon="plus" floated="right" size="mini" />
                         <Modal open={this.state.open} >
                             <Modal.Header>เพิ่มรายการใหม่</Modal.Header>
                             <Modal.Content scrolling>
