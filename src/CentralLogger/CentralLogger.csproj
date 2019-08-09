@@ -19,7 +19,7 @@
             <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
             <PrivateAssets>all</PrivateAssets>
         </PackageReference>
-        <PackageReference Include="Microsoft.AspNetCore.App" Version="2.1.4" />
+        <PackageReference Include="Microsoft.AspNetCore.App" Version="2.2.6" />
         <PackageReference Include="Microsoft.AspNetCore.Cryptography.KeyDerivation" Version="2.1.0" />
         <PackageReference Include="Microsoft.AspNetCore.SignalR" Version="1.0.0" />
         <!-- <PackageReference Include="Moment.js" Version="2.22.2" /> -->
