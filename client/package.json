@@ -23,7 +23,7 @@
     "@types/react": "^16.4.9",
     "@types/react-datepicker": "^1.1.7",
     "@types/react-dom": "^16.0.7",
-    "axios": "^0.18.0",
+    "axios": "^0.18.1",
     "echarts": "^4.1.0",
     "echarts-for-react": "^2.0.14",
     "email-validator": "^2.0.4",
