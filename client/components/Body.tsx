@@ -175,6 +175,8 @@ export class Body extends React.Component<any, State> {
         this.initmailList()
         this.handleSignalR()
     }
+    // hacktober 2019 -1
+    // hacktober 2019 -2
     public initSearchByAll = (startDate: Date, endDate: Date, app: string, ip: string) => {
         this.LogDate = []
         this.LogNow = []
