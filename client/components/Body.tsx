@@ -180,6 +180,7 @@ export class Body extends React.Component<any, State> {
     // hacktober 2019 -3
      // hacktober 2019 -4
       // hacktober 2019 -5
+      // hacktober 2019 -final
     public initSearchByAll = (startDate: Date, endDate: Date, app: string, ip: string) => {
         this.LogDate = []
         this.LogNow = []
