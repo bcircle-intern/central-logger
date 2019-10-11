@@ -155,7 +155,7 @@ export class LogList extends React.Component<Props, State> {
                                 height="100%"
                                 endMessage={
                                     <p style={{ textAlign: "center" }}>
-                                        <b>Log Ended</b>
+                                        <b>สิ้นสุด Log</b>
                                     </p>
                                 }
                             >
