@@ -37,7 +37,7 @@ export class User extends React.Component<Props, State> {
                     </Table.Cell>
                 </Table.Row>
                 :
-                <div>No Data</div>
+                <div>ไม่พบข้อมูล</div>
         )
     }
 }
