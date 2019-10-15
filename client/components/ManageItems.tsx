@@ -159,11 +159,11 @@ export class ManageItems extends React.Component<Props, State> {
                                 <Modal.Actions>
                                     <Button color="green" floated="right" icon labelPosition="left" onClick={this.onSave}>
                                         <Icon name="save" />
-                                        Save
+                                        บันทึก
                             </Button>
                                     <Button color="red" icon labelPosition="left" onClick={this.onClose}>
                                         <Icon name="cancel" />
-                                        Cancel
+                                        ยกเลิก
                             </Button>
                                 </Modal.Actions>
                             </Modal>
