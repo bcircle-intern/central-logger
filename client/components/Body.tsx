@@ -28,7 +28,7 @@ const BodyDiv = styled.div`
   justify-content: center;
   position: absolute;
   width:100%;
-  height: 90%;
+  height: 95%;
   padding: 1.5em;
   position: relative;
   min-width: 950px;
