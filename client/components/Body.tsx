@@ -326,7 +326,8 @@ export class Body extends React.Component<any, State> {
             showCancelButton: true,
             confirmButtonColor: "#3085d6",
             cancelButtonColor: "#d33",
-            confirmButtonText: "ลบ"
+            confirmButtonText: "ลบ",
+            cancelButtonText: "ยกเลิก"
         }).then((result) => {
             if (result.value) {
                 this.initDeleteApp(AppName)
@@ -345,7 +346,8 @@ export class Body extends React.Component<any, State> {
             showCancelButton: true,
             confirmButtonColor: "#3085d6",
             cancelButtonColor: "#d33",
-            confirmButtonText: "ลบ"
+            confirmButtonText: "ลบ",
+            cancelButtonText: "ยกเลิก"
         }).then((result) => {
             if (result.value) {
                 this.initDeleteUser(user.toString())
